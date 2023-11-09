@@ -16,7 +16,7 @@ class Bullets(pygame.sprite.Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
         self.enemy_group = enemy_group
-        self.collision_radius = self.image.get_width()
+        self.collision_radius = self.reg_image.get_height() * 2
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
@@ -62,4 +62,5 @@ class Bullets(pygame.sprite.Sprite):
         if hit_enemy_list:
             for enemy in hit_enemy_list:
                 enemy.kill()
+            self.kill()
 

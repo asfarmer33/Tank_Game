@@ -6,8 +6,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, screen, image, x = 0, y = 0):
         super().__init__()
         self.screen = screen
-        self.image = pygame.image.load(image)
-        self.rot_image = self.image
+        self.reg_image = pygame.image.load(image)
+        self.image = self.reg_image
         self.x = x
         self.y = y
         self.rotate = 0
@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.centery = self.y
 
     def draw(self):
-        self.screen.blit(self.rot_image, self.rect)
+        self.screen.blit(self.image, self.rect)
     def update(self):
         if (self.x - self.rect.width/2) > 0 and (self.x + self.rect.width/2) < self.screen.get_width():
             self.x += self.speed * math.cos(math.pi/2 - self.angle*math.pi/180)
@@ -28,6 +28,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.centery = self.y
 
     def turn(self):
-        self.rot_image = pygame.transform.rotate(self.image, self.angle)
-        self.rect = self.rot_image.get_rect(center = (self.x, self.y))
+        self.image = pygame.transform.rotate(self.reg_image, self.angle)
+        self.rect = self.image.get_rect(center = (self.x, self.y))
 
