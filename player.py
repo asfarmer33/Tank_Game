@@ -4,6 +4,7 @@ import math
 class Player(pygame.sprite.Sprite):
 
     def __init__(self, screen, image, x = 0, y = 0):
+        super().__init__()
         self.screen = screen
         self.image = pygame.image.load(image)
         self.rot_image = self.image
