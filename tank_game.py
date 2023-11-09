@@ -48,8 +48,9 @@ while running:
     player_tank.update()
     [bullet.update() for bullet in bullet_group]
 
-    player_tank.draw()
+
     [bullet.draw() for bullet in bullet_group]
+    player_tank.draw()
 
 
     pygame.display.flip()
