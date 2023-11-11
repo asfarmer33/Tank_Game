@@ -20,8 +20,6 @@ bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 
 
-
-
 running = True
 while running:
     for event in pygame.event.get():
@@ -33,22 +31,24 @@ while running:
 
     keys = pygame.key.get_pressed() # list of pressed keys
     if keys[pygame.K_UP]:
-        player_tank.speed = 2
+        player_tank.speed = 3
     elif keys[pygame.K_DOWN]:
-        player_tank.speed = -2
+        player_tank.speed = -3
     else:
         player_tank.speed = 0
     if keys[pygame.K_LEFT]:
-        player_tank.angle += 1
+        player_tank.angle += 1.4
         player_tank.turn()
     elif keys[pygame.K_RIGHT]:
-        player_tank.angle -= 1
+        player_tank.angle -= 1.4
         player_tank.turn()
 
     screen.blit(background, (0, 0))
 
     if len(enemy_group) < 1:
         enemy_group.add(enemy_tank(screen, 300, 300, player_tank))
+
+
 
 
     player_tank.update()
