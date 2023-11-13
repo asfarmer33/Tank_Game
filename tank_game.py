@@ -3,6 +3,7 @@ from backgrounds import make_background
 from player import Player
 from bullets import Bullets
 from enemy_tanks import enemy_tank
+from object import *
 
 pygame.init()
 FPS = pygame.time.Clock()
@@ -18,6 +19,9 @@ player_tank = Player(screen, "images/tank_blue.png", 100, 100)
 
 bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
+object_group = pygame.sprite.Group()
+
+object_group.add(Can(screen, 400, 400))
 
 
 running = True
@@ -27,7 +31,7 @@ while running:
             pygame.quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                bullet_group.add(Bullets(screen, player_tank.x, player_tank.y, player_tank.angle, enemy_group))
+                bullet_group.add(Bullets(screen, player_tank.x, player_tank.y, player_tank.angle, enemy_group, object_group))
 
     keys = pygame.key.get_pressed() # list of pressed keys
     if keys[pygame.K_UP]:
@@ -46,7 +50,7 @@ while running:
     screen.blit(background, (0, 0))
 
     if len(enemy_group) < 1:
-        enemy_group.add(enemy_tank(screen, 300, 300, player_tank))
+        enemy_group.add(enemy_tank(screen, 300, 300, player_tank, object_group))
 
 
 
@@ -55,8 +59,8 @@ while running:
     [bullet.update() for bullet in bullet_group]
     [enemy.update() for enemy in enemy_group]
 
-
     [bullet.draw() for bullet in bullet_group]
+    [objects.draw() for objects in object_group]
     [enemy.draw() for enemy in enemy_group]
     player_tank.draw()
 

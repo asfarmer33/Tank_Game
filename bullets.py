@@ -3,7 +3,7 @@ import math
 
 class Bullets(pygame.sprite.Sprite):
 
-    def __init__(self, screen, x, y, angle, enemy_group):
+    def __init__(self, screen, x, y, angle, enemy_group, object_group):
         super().__init__()
         self.screen = screen
         self.x = x
@@ -13,9 +13,10 @@ class Bullets(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
         self.bounce = 0
         self.rect = self.image.get_rect()
-        self.rect.x = self.x
-        self.rect.y = self.y
+        self.rect.centerx = self.x
+        self.rect.centery = self.y
         self.enemy_group = enemy_group
+        self.object_group = object_group
         self.collision_radius = self.reg_image.get_height() * 2
 
     def draw(self):
@@ -24,28 +25,32 @@ class Bullets(pygame.sprite.Sprite):
     def update(self):
         self.x += 5 * math.cos(math.pi/2 - self.angle*math.pi/180)
         self.y += 5 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
-        self.rect.x = self.x
-        self.rect.y = self.y
+        self.rect.centerx = self.x
+        self.rect.centery = self.y
         self.bouncing()
         self.hit_enemy()
 
 
     def bouncing(self):
-        if self.x + self.image.get_width() > self.screen.get_width() or self.x < 0: # check boundaries of screen
-            if self.bounce < 1: # allows it to bounce 1 time
+        if self.bounce < 2: # allow it to bounce only once
+            if self.x + self.image.get_width()/2 > self.screen.get_width() or self.x - self.image.get_width()/2 < 0: # check boundaries of screen
                 self.angle *= -1 # swaps angle
                 self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
                 self.bounce += 1
-            else:
-                self.kill()
-        if self.y + self.image.get_height() > self.screen.get_height() or self.y < 0:
-            if self.bounce < 1:
+            if self.y + self.image.get_height()/2 > self.screen.get_height() or self.y - self.image.get_height()/2 < 0:
                 self.angle = self.angle * -1 + 180 # swaps angle and then flips it
                 self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
                 self.bounce += 1
-            else:
-                self.kill()
 
+            object_hit = pygame.sprite.spritecollide(self, self.object_group, dokill=False)
+
+            if object_hit:
+                self.angle *= -1
+                self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
+                self.bounce += 1
+
+        else:
+            self.kill()
 
     def get_distance(self, coord1, coord2):
         x1, y1 = coord1
