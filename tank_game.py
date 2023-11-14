@@ -15,7 +15,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 background = make_background(screen)
 
-player_tank = Player(screen, "images/tank_blue.png", 100, 100)
 
 bullet_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
@@ -24,6 +23,8 @@ object_group = pygame.sprite.Group()
 object_group.add(Can(screen, 400, 400))
 object_group.add(Can(screen, 300, 200))
 object_group.add(Can(screen, 100, 300))
+
+player_tank = Player(screen, "images/tank_blue.png", 100, 100, object_group)
 
 
 running = True
