@@ -37,18 +37,12 @@ while running:
                 bullet_group.add(Bullets(screen, player_tank.x, player_tank.y, player_tank.angle, enemy_group, object_group))
 
     keys = pygame.key.get_pressed() # list of pressed keys
-    if keys[pygame.K_UP]:
-        player_tank.speed = 3
-    elif keys[pygame.K_DOWN]:
-        player_tank.speed = -3
-    else:
-        player_tank.speed = 0
     if keys[pygame.K_LEFT]:
         player_tank.angle += 1.4
-        player_tank.turn()
+        player_tank.turn(1.4)
     elif keys[pygame.K_RIGHT]:
         player_tank.angle -= 1.4
-        player_tank.turn()
+        player_tank.turn(-1.4)
 
     screen.blit(background, (0, 0))
 

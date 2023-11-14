@@ -27,23 +27,31 @@ class Player(pygame.sprite.Sprite):
         self.move()
         collided = pygame.sprite.spritecollide(self, self.object_group, False)
         if collided:
+            print("test")
             self.x = old_x
             self.y = old_y
 
         self.rect.centerx = self.x
         self.rect.centery = self.y
-    def turn(self):
+
+    def turn(self, turn):
+        original_rect = self.rect
         self.image = pygame.transform.rotate(self.reg_image, self.angle)
         self.rect = self.image.get_rect(center = (self.x, self.y))
         self.angle %= 360
-
-    def check_collide(self, x, y):
-        for object in self.object_group:
-            if self.rect.colliderect(object):
-                self.x = x
-                self.y = y
+        collided = pygame.sprite.spritecollide(self, self.object_group, False)
+        if collided:
+            self.rect = original_rect
+            self.angle -= turn
 
     def move(self):
+        keys = pygame.key.get_pressed()  # list of pressed keys
+        if keys[pygame.K_UP]:
+            self.speed = 3
+        elif keys[pygame.K_DOWN]:
+            self.speed = -3
+        else:
+            self.speed = 0
         self.movex()
         self.movey()
 
