@@ -23,8 +23,8 @@ class Bullets(pygame.sprite.Sprite):
         self.screen.blit(self.image, self.rect)
 
     def update(self):
-        self.x += 5 * math.cos(math.pi/2 - self.angle*math.pi/180)
-        self.y += 5 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+        self.x += 5 * math.cos(math.pi/2 - self.angle*math.pi/180) # x direction
+        self.y += 5 * math.sin(math.pi / 2 - self.angle * math.pi / 180) # y direction
         self.rect.centerx = self.x
         self.rect.centery = self.y
         self.bouncing()

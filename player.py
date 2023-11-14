@@ -24,18 +24,11 @@ class Player(pygame.sprite.Sprite):
         old_x = self.x
         old_y = self.y
 
-        self.movex()
+        self.move()
         collided = pygame.sprite.spritecollide(self, self.object_group, False)
         if collided:
             self.x = old_x
-            self.movey()
-
-
-        self.movey()
-        collided = pygame.sprite.spritecollide(self, self.object_group, False)
-        if collided:
             self.y = old_y
-            self.movex()
 
         self.rect.centerx = self.x
         self.rect.centery = self.y
@@ -49,6 +42,10 @@ class Player(pygame.sprite.Sprite):
             if self.rect.colliderect(object):
                 self.x = x
                 self.y = y
+
+    def move(self):
+        self.movex()
+        self.movey()
 
     def movex(self):
         if (self.x - self.rect.width/2) > 0 and (self.x + self.rect.width/2) < self.screen.get_width():
