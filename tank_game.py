@@ -22,6 +22,8 @@ enemy_group = pygame.sprite.Group()
 object_group = pygame.sprite.Group()
 
 object_group.add(Can(screen, 400, 400))
+object_group.add(Can(screen, 300, 200))
+object_group.add(Can(screen, 100, 300))
 
 
 running = True

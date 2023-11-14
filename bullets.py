@@ -32,6 +32,8 @@ class Bullets(pygame.sprite.Sprite):
 
 
     def bouncing(self):
+        if self.bounce >= 2: # if it bounced more than once kill it
+            self.kill()
         if self.bounce < 2: # allow it to bounce only once
             if self.x + self.image.get_width()/2 > self.screen.get_width() or self.x - self.image.get_width()/2 < 0: # check boundaries of screen
                 self.angle *= -1 # swaps angle
@@ -42,15 +44,17 @@ class Bullets(pygame.sprite.Sprite):
                 self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
                 self.bounce += 1
 
-            object_hit = pygame.sprite.spritecollide(self, self.object_group, dokill=False)
 
-            if object_hit:
-                self.angle *= -1
-                self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
-                self.bounce += 1
-
-        else:
-            self.kill()
+            for object in self.object_group: # checking all objects on the screen
+                if self.rect.colliderect(object): # checking if the bullet collided with the object
+                    if self.rect.centerx > object.rect.centerx + object.get_width()/2 * 0.98 or self.rect.centerx < object.rect.centerx - object.get_width()/2 * 0.98: # checking to see if it hit the left or right of the box
+                        self.angle *= -1
+                        self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
+                        self.bounce += 1
+                    elif self.rect.centery > object.rect.centery + object.get_height()/2 * 0.98 or self.rect.centery < object.rect.centery - object.get_height()/2 * 0.98: # else it hit the top of the box
+                        self.angle = self.angle * -1 + 180  # swaps angle and then flips it
+                        self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
+                        self.bounce += 1
 
     def get_distance(self, coord1, coord2):
         x1, y1 = coord1
