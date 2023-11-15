@@ -17,19 +17,12 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = self.x
         self.rect.centery = self.y
         self.object_group = object_group
+        self.path = []
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
     def update(self):
-        old_x = self.x
-        old_y = self.y
-
         self.move()
-        collided = pygame.sprite.spritecollide(self, self.object_group, False)
-        if collided:
-            print("test")
-            self.x = old_x
-            self.y = old_y
 
         self.rect.centerx = self.x
         self.rect.centery = self.y
@@ -46,14 +39,29 @@ class Player(pygame.sprite.Sprite):
 
     def move(self):
         keys = pygame.key.get_pressed()  # list of pressed keys
+
         if keys[pygame.K_UP]:
             self.speed = 3
         elif keys[pygame.K_DOWN]:
             self.speed = -3
         else:
             self.speed = 0
+
         self.movex()
         self.movey()
+
+        self.path.append(self.rect.center)
+        self.path = self.path[-2:]
+
+        if self.check_collide():
+            self.x, self.y = self.path[0]
+
+        print(f"Center: {self.rect.center}")
+
+        print(self.path)
+
+        # move and check collision
+
 
     def movex(self):
         if (self.x - self.rect.width/2) > 0 and (self.x + self.rect.width/2) < self.screen.get_width():
@@ -66,3 +74,11 @@ class Player(pygame.sprite.Sprite):
             self.y += self.speed * math.sin(math.pi/2 - self.angle*math.pi/180)
         else:
             self.y += self.speed * math.sin(math.pi / 2 - self.angle * math.pi / 180) * 0.02
+
+    def check_collide(self):
+        collided = pygame.sprite.spritecollide(self, self.object_group, False)
+        if collided:
+            return 1
+        else:
+            return 0
+
