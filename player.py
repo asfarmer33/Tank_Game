@@ -50,17 +50,12 @@ class Player(pygame.sprite.Sprite):
         self.movex()
         self.movey()
 
-        self.path.append(self.rect.center)
-        self.path = self.path[-2:]
+        self.path.append(self.rect.center) # adds position to list
+        self.path = self.path[-2:] # list of last two positions
 
         if self.check_collide():
-            self.x, self.y = self.path[0]
+            self.x, self.y = self.path[0] # if it collides with an object it goes back to its position two positions ago
 
-        print(f"Center: {self.rect.center}")
-
-        print(self.path)
-
-        # move and check collision
 
 
     def movex(self):
@@ -76,7 +71,7 @@ class Player(pygame.sprite.Sprite):
             self.y += self.speed * math.sin(math.pi / 2 - self.angle * math.pi / 180) * 0.02
 
     def check_collide(self):
-        collided = pygame.sprite.spritecollide(self, self.object_group, False)
+        collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.9))
         if collided:
             return 1
         else:
