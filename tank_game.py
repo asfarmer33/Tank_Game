@@ -34,7 +34,13 @@ while running:
             pygame.quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                bullet_group.add(Bullets(screen, player_tank.x, player_tank.y, player_tank.angle, enemy_group, object_group))
+                bullet_group.add(Bullets(screen, player_tank.x, player_tank.y, player_tank.angle, enemy_group, object_group, 1))
+
+    for enemy in enemy_group:
+        print("Test1")
+        if enemy.create_bullet():
+            print("Test2")
+            bullet_group.add(Bullets(screen, enemy.x, enemy.y, enemy.angle, enemy_group, object_group, 0))
 
     keys = pygame.key.get_pressed() # list of pressed keys
     if keys[pygame.K_LEFT]:

@@ -19,22 +19,30 @@ class enemy_tank(pygame.sprite.Sprite):
         self.player_tank = player_tank
         self.player_group = pygame.sprite.Group()
         self.player_group.add(player_tank)
-        self.bullet_group = pygame.sprite.Group()
         self.object_group = object_group
         self.time_shot = 0
         self.time_turn = 0
+        self.path = []
+        self.make_bullet = 0
 
     def draw(self):
-        [bullet.draw() for bullet in self.bullet_group]
         self.screen.blit(self.image, self.rect)
 
     def update(self):
         self.move()
         self.turn()
+
         if pygame.time.get_ticks() - self.time_shot > 3000 and abs(self.angle - self.player_angle()) < 50: # every 3 seconds the enemy tank can shoot and if it is looking at the player
-            self.bullet_group.add(Bullets(self.screen, self.x, self.y, self.angle, self.player_group, self.object_group))  # creates bullet that can hit the player
+            self.make_bullet = 1 # creates bullet that can hit the player
             self.time_shot = pygame.time.get_ticks()
-        [bullet.update() for bullet in self.bullet_group]
+
+    def create_bullet(self):
+        if self.make_bullet == 1:
+            self.make_bullet = 0
+            return 1
+        else:
+            return 0
+
 
     def player_angle(self):
         player_x = self.player_tank.x
@@ -62,7 +70,13 @@ class enemy_tank(pygame.sprite.Sprite):
         else:
             self.turn_speed = 0.5
 
+        self.path.append(self.rect.center)  # adds position to list
+        self.path = self.path[-2:]  # list of last two positions
+        if self.check_collide():
+            self.x, self.y = self.path[0]
+
     def turn(self):
+        original_rect = self.rect
         angle_diff = (self.player_angle() - self.angle + 180) % 360 - 180
         if angle_diff >= 0:
             direction = 1
@@ -71,8 +85,22 @@ class enemy_tank(pygame.sprite.Sprite):
         self.angle += self.turn_speed * direction
         self.angle %= 360 # keeps it within 0-360
 
+        collided = pygame.sprite.spritecollide(self, self.object_group, False)
+        if collided:
+            self.rect = original_rect
+            self.angle -= self.turn_speed
+
         self.image = pygame.transform.rotate(self.reg_image, self.angle)
         self.rect = self.image.get_rect(center=(self.x, self.y))
+
+
+
+    def check_collide(self):
+        collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.9))
+        if collided:
+            return 1
+        else:
+            return 0
 
 
 
