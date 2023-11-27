@@ -9,8 +9,30 @@ def make_background(screen):
     tile_width = sand_tile.get_width()
     tile_height = sand_tile.get_height()
 
-    for x in range(0, WIDTH, tile_width):
-        for y in range(0, HEIGHT, tile_height):
-            background.blit(sand_tile, (x, y))
+    backgrounds = {"test":
+        [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        ]
+
+    }
+
+    background_num = 0
+    if background_num == 0:
+        for x in range(0, 12):
+            for y in range(0, 10):
+                tile = backgrounds["test"][y][x]
+                if tile == 0:
+                    tile_type = sand_tile
+                background.blit(tile_type, (x*64, y*64))
 
     return background
