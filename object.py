@@ -6,12 +6,12 @@ class Can(pygame.sprite.Sprite):
         super().__init__()
         self.screen = screen
         self.image = pygame.image.load('images/sandbagBrown.png')
-        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.image = pygame.transform.scale(self.image, (64, 64))
         self.x = x
         self.y = y
         self.rect = self.image.get_rect()
-        self.rect.centerx = self.x
-        self.rect.centery = self.y
+        self.rect.x = self.x
+        self.rect.y = self.y
 
     def update(self):
         self.y = 0

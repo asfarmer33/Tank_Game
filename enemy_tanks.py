@@ -82,28 +82,52 @@ class enemy_tank(pygame.sprite.Sprite):
 
     def turn(self):
         original_rect = self.rect
-        angle_diff = (self.player_angle() - self.angle + 180) % 360 - 180
-        if angle_diff >= 0:
+        angle_diff = (self.player_angle() - self.angle + 180) % 360 - 180 # find the angle to face the player
+        if angle_diff >= 0: # find if it needs to turn left or right
             direction = 1
         else:
             direction = -1
-        self.angle += self.turn_speed * direction
-        if self.check_collide():
+        self.angle += self.turn_speed * direction # change angle
+        if self.check_collide(): # if it collides with an object while turning, do not turn
             self.angle -= self.turn_speed * direction
         self.angle %= 360 # keeps it within 0-360
-
-        collided = pygame.sprite.spritecollide(self, self.object_group, False)
-        if collided:
-            self.rect = original_rect
-            self.angle -= self.turn_speed
 
         self.image = pygame.transform.rotate(self.reg_image, self.angle)
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def move_collide(self):
+        print(self.count_move_collide)
+
         if self.count_move_collide < 30:
-            self.x += -1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
-            self.y += -1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+            self.x -= 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180) # if collided move back
+            self.y -= 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+
+            self.path.append(self.rect.center)  # adds position to list
+            self.path = self.path[-2:]  # list of last two positions
+            if self.check_collide() and self.count_move_collide > 10:
+                self.x, self.y = self.path[0]  # move back to position two times ago
+
+            self.rect.center = self.x, self.y
+            self.angle += self.turn_speed # turn left while moving back
+
+            if self.check_collide(): # if it turns into an object don't turn
+                self.angle -= self.turn_speed
+
+            self.rect.center = self.x, self.y
+            self.angle %= 360
+
+            self.image = pygame.transform.rotate(self.reg_image, self.angle) # redraw image
+            self.rect = self.image.get_rect(center=(self.x, self.y))
+            self.count_move_collide += 1
+            self.collided_count = 40
+        elif self.count_move_collide < 100: # move forward a little after turning and moving back
+            self.x += 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
+            self.y += 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+            self.path.append(self.rect.center)  # adds position to list
+            self.path = self.path[-2:]  # list of last two positions
+            if self.check_collide():
+                self.x, self.y = self.path[0]  # move back to position two times ago
+                self.collided_count = 100
             self.rect.center = self.x, self.y
             self.count_move_collide += 1
             self.collided_count = 40
@@ -117,9 +141,30 @@ class enemy_tank(pygame.sprite.Sprite):
         if collided:
             self.collided_count += 1
             return 1
-        else:
-            return 0
 
+        check_boundaries = 0
+        if (self.x - self.rect.width / 2) > 0 and (self.x + self.rect.width / 2) < self.screen.get_width():
+            check_boundaries = 0
+        else:
+            self.turn_360()
+            return 1
+
+        if (self.y - self.rect.height / 2) > 0 and (self.y + self.rect.height / 2) < self.screen.get_height():
+            check_boundaries = 0
+        else:
+
+            self.turn_360()
+            return 1
+
+        return 0
+
+    def turn_360(self):
+        self.x += 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
+        self.y += 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+        self.angle += self.turn_speed  # change angle
+        if self.check_collide():  # if it collides with an object while turning, do not turn
+            self.angle -= self.turn_speed
+        self.angle %= 360  # keeps it within 0-360
 
 
 

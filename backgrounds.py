@@ -1,4 +1,5 @@
 import pygame
+from object import *
 
 def make_background(screen):
     WIDTH = screen.get_width()
@@ -16,11 +17,11 @@ def make_background(screen):
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
         ]
 
@@ -31,8 +32,48 @@ def make_background(screen):
         for x in range(0, 12):
             for y in range(0, 10):
                 tile = backgrounds["test"][y][x]
-                if tile == 0:
-                    tile_type = sand_tile
+                tile_type = get_tile(tile)
                 background.blit(tile_type, (x*64, y*64))
 
     return background
+
+def get_objects(screen):
+    object_group = pygame.sprite.Group()
+    objects = {"test":
+        [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        ]
+
+    }
+    for x in range(0, 12):
+        for y in range(0, 10):
+            object = objects["test"][y][x]
+            if object == 1:
+                object_group.add(Can(screen, x*64, y*64))
+
+    return object_group
+
+
+def get_tile(tile_num):
+    if tile_num == 0:
+        return pygame.image.load('images/tileSand1.png')
+    if tile_num == 1:
+        return pygame.image.load('images/tileGrass1.png')
+    if tile_num == 2:
+        return pygame.image.load('images/tileGrass_transitionN.png')
+    if tile_num == 3:
+        return pygame.image.load('images/tileGrass_transitionE.png')
+    if tile_num == 4:
+        return pygame.image.load('images/tileGrass_transitionS.png')
+    if tile_num == 5:
+        return pygame.image.load('images/tileGrass_transitionW.png')
