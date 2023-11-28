@@ -1,6 +1,45 @@
 import pygame
 import math
 
+
+def find_path(object_array, level, point_array, current_point, goal_point):
+    path_not_done = True
+    path = []
+    points = point_array
+    objects = object_array
+
+    new_path = []
+    for y in range(0, 10): # go through all the position in the array
+        for x in range(0, 12):
+            dist = get_distance(current_point, points[y][x])
+            if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
+                if objects[level][y][x] == 1: # only add it if there is not an object there
+                    if points[y][x] not in path:
+                        if points[y][x] == goal_point:
+                            return goal_point
+                        else:
+                            new_path.append(points[y][x])
+
+        for items in new_path:
+            if items not in path:
+                path.append(items)
+
+        return_path = []
+        for pos in path:
+            point = find_path(object_array, level, point_array, pos, goal_point)
+            if point == goal_point:
+                return_path.append(pos)
+                return_path.append(goal_point)
+                return return_path
+            if point:
+                return_path.append(pos)
+                for points in point:
+                    return_path.append(points)
+                return return_path
+
+
+
+
 def path():
     objects = {"test":
         [
@@ -40,18 +79,17 @@ def path():
     player_x_array = int(player_x / 64)
     player_y_array = int(player_y / 64)
 
-    print(f"{player_x_array}, {player_y_array}")
 
     enemy_x_array = int(enemy_x / 64)
     enemy_y_array = int(enemy_y / 64)
 
-    print(f"{enemy_x_array}, {enemy_y_array}")
-
     enemy_coord = points[enemy_y_array][enemy_x_array]
     player_coord = points[player_y_array][player_x_array]
 
-    print(f"{enemy_coord}")
-    print(f"{player_coord}")
+    print(enemy_coord)
+
+    print(find_path(objects, "test", points, enemy_coord, player_coord))
+
 
 
 def get_distance(coord1, coord2):
