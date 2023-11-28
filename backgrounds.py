@@ -29,10 +29,13 @@ def make_background(screen):
 
     background_num = 0
     if background_num == 0:
-        for x in range(0, 12):
-            for y in range(0, 10):
+        for y in range(0, 10):
+            for x in range(0, 14):
                 tile = backgrounds["test"][y][x]
                 tile_type = get_tile(tile)
+                if tile == 2:
+                    print("transition")
+                tile_type = pygame.transform.scale(tile_type, (64, 64))
                 background.blit(tile_type, (x*64, y*64))
 
     return background
@@ -41,24 +44,25 @@ def get_objects(screen):
     object_group = pygame.sprite.Group()
     objects = {"test":
         [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
         ]
 
     }
-    for x in range(0, 12):
-        for y in range(0, 10):
+    for y in range(0, 10):
+        for x in range(0, 14):
             object = objects["test"][y][x]
-            if object == 1:
+            if object == 0:
+                print("building")
                 object_group.add(Can(screen, x*64, y*64))
 
     return object_group

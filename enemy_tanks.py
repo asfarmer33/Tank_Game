@@ -33,10 +33,11 @@ class enemy_tank(pygame.sprite.Sprite):
         self.screen.blit(self.image, self.rect)
 
     def update(self):
-        print(self.angle)
         if self.collided_count <= 20:
             self.move()
             self.turn()
+        elif self.collided_count >= 50:
+            self.turn_180()
         else:
             self.move_collide()
 
@@ -100,9 +101,10 @@ class enemy_tank(pygame.sprite.Sprite):
 
     def move_collide(self):
 
-        if self.count_move_collide < 30:
-            self.x -= 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180) # if collided move back
-            self.y -= 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+        if self.count_move_collide < 10:
+            self.turn_speed = 4
+            self.x -= 2 * math.cos(math.pi / 2 - self.angle * math.pi / 180) # if collided move back
+            self.y -= 2 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
 
             self.path.append(self.rect.center)  # adds position to list
             self.path = self.path[-2:]  # list of last two positions
@@ -128,9 +130,9 @@ class enemy_tank(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(center=(self.x, self.y))
             self.count_move_collide += 1
             self.collided_count = 40
-        elif self.count_move_collide < 100: # move forward a little after turning and moving back
-            self.x += 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
-            self.y += 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+        elif self.count_move_collide < 20: # move forward a little after turning and moving back
+            self.x += 3 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
+            self.y += 3 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
             self.path.append(self.rect.center)  # adds position to list
             self.path = self.path[-2:]  # list of last two positions
             if self.check_collide():
@@ -154,29 +156,35 @@ class enemy_tank(pygame.sprite.Sprite):
         if (self.x - self.rect.width / 2) > 0 and (self.x + self.rect.width / 2) < self.screen.get_width():
             check_boundaries = 0
         else:
-            self.turn_180()
+            self.collided_count = 50
             return 1
 
         if (self.y - self.rect.height / 2) > 0 and (self.y + self.rect.height / 2) < self.screen.get_height():
             check_boundaries = 0
         else:
 
-            self.turn_180()
+            self.collided_count = 50
             return 1
 
         return 0
 
     def turn_180(self):
         self.collided_count = 40
+        print(self.count_move_180)
         if self.count_move_180 == 0:
-            self.turn_collide *= 1
-        if self.count_move_180 < 20:
-            self.x -= 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
-            self.y -= 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+            self.turn_collide *= -1
+        if self.count_move_180 < 10:
+            print("test1")
+            self.x -= 2 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
+            self.y -= 2 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
             self.count_move_180 += 1
-        elif self.count_move_180 < 56:
+            self.collided_count = 50
+        elif self.count_move_180 < 45:
+            print("test2")
+            self.turn_speed = 5
             self.angle += self.turn_speed  # change angle
             self.count_move_180 += 1
+            self.collided_count = 50
         else:
             self.count_move_180 = 0
             self.collided_count = 0

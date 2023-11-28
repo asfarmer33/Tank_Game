@@ -9,9 +9,11 @@ pygame.init()
 FPS = pygame.time.Clock()
 
 HEIGHT = 640
-WIDTH = 768
+WIDTH = 896
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+print(screen.get_width())
 
 background = make_background(screen)
 
