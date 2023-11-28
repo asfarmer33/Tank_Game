@@ -26,11 +26,14 @@ class enemy_tank(pygame.sprite.Sprite):
         self.make_bullet = 0
         self.collided_count = 0
         self.count_move_collide = 0
+        self.count_move_180 = 0
+        self.turn_collide = 1
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
 
     def update(self):
+        print(self.angle)
         if self.collided_count <= 20:
             self.move()
             self.turn()
@@ -96,7 +99,6 @@ class enemy_tank(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def move_collide(self):
-        print(self.count_move_collide)
 
         if self.count_move_collide < 30:
             self.x -= 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180) # if collided move back
@@ -108,10 +110,16 @@ class enemy_tank(pygame.sprite.Sprite):
                 self.x, self.y = self.path[0]  # move back to position two times ago
 
             self.rect.center = self.x, self.y
-            self.angle += self.turn_speed # turn left while moving back
+            if self.turn_collide == 1:
+                self.angle += self.turn_speed # turn left while moving back
 
-            if self.check_collide(): # if it turns into an object don't turn
-                self.angle -= self.turn_speed
+                if self.check_collide(): # if it turns into an object don't turn
+                    self.angle -= self.turn_speed
+            else:
+                self.angle -= self.turn_speed  # turn left while moving back
+
+                if self.check_collide():  # if it turns into an object don't turn
+                    self.angle += self.turn_speed
 
             self.rect.center = self.x, self.y
             self.angle %= 360
@@ -146,24 +154,37 @@ class enemy_tank(pygame.sprite.Sprite):
         if (self.x - self.rect.width / 2) > 0 and (self.x + self.rect.width / 2) < self.screen.get_width():
             check_boundaries = 0
         else:
-            self.turn_360()
+            self.turn_180()
             return 1
 
         if (self.y - self.rect.height / 2) > 0 and (self.y + self.rect.height / 2) < self.screen.get_height():
             check_boundaries = 0
         else:
 
-            self.turn_360()
+            self.turn_180()
             return 1
 
         return 0
 
-    def turn_360(self):
-        self.x += 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
-        self.y += 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
-        self.angle += self.turn_speed  # change angle
+    def turn_180(self):
+        self.collided_count = 40
+        if self.count_move_180 == 0:
+            self.turn_collide *= 1
+        if self.count_move_180 < 20:
+            self.x -= 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
+            self.y -= 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+            self.count_move_180 += 1
+        elif self.count_move_180 < 56:
+            self.angle += self.turn_speed  # change angle
+            self.count_move_180 += 1
+        else:
+            self.count_move_180 = 0
+            self.collided_count = 0
+
         if self.check_collide():  # if it collides with an object while turning, do not turn
             self.angle -= self.turn_speed
+        self.image = pygame.transform.rotate(self.reg_image, self.angle)
+        self.rect = self.image.get_rect(center=(self.x, self.y))
         self.angle %= 360  # keeps it within 0-360
 
 
