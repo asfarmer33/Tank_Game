@@ -17,10 +17,10 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
         for x in range(0, 12):
             dist = get_distance(current_point, points[y][x])
             if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
-                if objects[level][y][x] == 1:
+                if objects[level][y][x] == 0:
                     closest_distance = -50
-                else:
-                    closest_distance = 30
+    if closest_distance == 0:
+        closest_distance = 20
 
     for y in range(0, 10): # go through all the position in the array
         for x in range(0, 12):
@@ -104,7 +104,7 @@ def path(player, enemy, level):
     enemy_coord = points[enemy_y_array][enemy_x_array]
     player_coord = points[player_y_array][player_x_array]
 
-    print(f"Enemy: {enemy_coord}, Player: {player_coord}")
+    #print(f"Enemy: {enemy_coord}, Player: {player_coord}")
 
     final_path = find_path(objects, level, points, enemy_coord, player_coord, 0, 0, [])
 
