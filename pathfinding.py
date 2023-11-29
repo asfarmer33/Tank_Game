@@ -2,7 +2,7 @@ import pygame
 import math
 
 
-def find_path(object_array, level, point_array, current_point, goal_point, last_point, path_length):
+def find_path(object_array, level, point_array, current_point, goal_point, last_point, path_length, all_paths):
     path = []
     points = point_array
     objects = object_array
@@ -22,10 +22,13 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
                             return goal_point
                         else:
                             if points[y][x] != last_point:
-                                if abs(get_distance(current_point, goal_point)) - abs(get_distance(points[y][x], goal_point)) > -50:
+                                if abs(get_distance(current_point, goal_point)) - abs(get_distance(points[y][x], goal_point)) > -50: # if it is moving away don't let it
                                     path_length += get_distance(current_point, points[y][x])
-                                    if path_length < 5000:
-                                        new_path.append(points[y][x])
+                                    if path_length < 2000: # if the overall path length is too long do not use it
+                                        if points[y][x] not in all_paths: # if the point is already in the path do not add it
+                                            new_path.append(points[y][x])
+                                            all_paths.append(points[y][x])
+
 
 
     for items in new_path:
@@ -33,7 +36,7 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
             path.append(items)
 
     for pos in path:
-        point = find_path(object_array, level, point_array, pos, goal_point, current_point, path_length)
+        point = find_path(object_array, level, point_array, pos, goal_point, current_point, path_length, all_paths)
         if point == goal_point:
             return_path.append(pos)
             return_path.append(goal_point)
@@ -93,7 +96,7 @@ def path(player, enemy, level):
 
     print(f"Enemy: {enemy_coord}, Player: {player_coord}")
 
-    final_path = find_path(objects, level, points, enemy_coord, player_coord, 0, 0)
+    final_path = find_path(objects, level, points, enemy_coord, player_coord, 0, 0, [])
 
     return final_path
 
