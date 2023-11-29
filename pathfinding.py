@@ -2,17 +2,16 @@ import pygame
 import math
 
 
-def find_path(object_array, level, point_array, current_point, goal_point, count):
-    path_not_done = True
+def find_path(object_array, level, point_array, current_point, goal_point, last_point, path_length):
     path = []
     points = point_array
     objects = object_array
-    count += 1
 
-    if count > 20:
-        return 0
-
+    return_path = []
     new_path = []
+    if current_point == goal_point:
+        return_path.append(current_point)
+        return return_path
     for y in range(0, 10): # go through all the position in the array
         for x in range(0, 12):
             dist = get_distance(current_point, points[y][x])
@@ -22,24 +21,28 @@ def find_path(object_array, level, point_array, current_point, goal_point, count
                         if points[y][x] == goal_point:
                             return goal_point
                         else:
-                            new_path.append(points[y][x])
+                            if points[y][x] != last_point:
+                                if abs(get_distance(current_point, goal_point)) - abs(get_distance(points[y][x], goal_point)) > -50:
+                                    path_length += get_distance(current_point, points[y][x])
+                                    if path_length < 5000:
+                                        new_path.append(points[y][x])
 
-        for items in new_path:
-            if items not in path:
-                path.append(items)
 
-        return_path = []
-        for pos in path:
-            point = find_path(object_array, level, point_array, pos, goal_point, count)
-            if point == goal_point:
-                return_path.append(pos)
-                return_path.append(goal_point)
-                return return_path
-            if point:
-                return_path.append(pos)
-                for points in point:
-                    return_path.append(points)
-                return return_path
+    for items in new_path:
+        if items not in path:
+            path.append(items)
+
+    for pos in path:
+        point = find_path(object_array, level, point_array, pos, goal_point, current_point, path_length)
+        if point == goal_point:
+            return_path.append(pos)
+            return_path.append(goal_point)
+            return return_path
+        if point:
+            return_path.append(pos)
+            for points in point:
+                return_path.append(points)
+            return return_path
 
 
 
@@ -90,7 +93,7 @@ def path(player, enemy, level):
 
     print(f"Enemy: {enemy_coord}, Player: {player_coord}")
 
-    final_path = find_path(objects, level, points, enemy_coord, player_coord, 0)
+    final_path = find_path(objects, level, points, enemy_coord, player_coord, 0, 0)
 
     return final_path
 
@@ -101,7 +104,7 @@ def get_distance(coord1, coord2):
     x2, y2 = coord2
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
-player = pygame.Rect(64,64,20,20)
+player = pygame.Rect(64, 64, 20,20)
 enemy = pygame.Rect(256, 448, 20, 20)
 
 print(path(player.center, enemy.center, "test"))

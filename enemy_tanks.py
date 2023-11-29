@@ -24,17 +24,23 @@ class enemy_tank(pygame.sprite.Sprite):
         self.time_shot = 0
         self.time_turn = 0
         self.make_bullet = 0
+        self.path = []
+        self.time_calc = 0
+        self.calc_angle = 0
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
 
     def update(self):
-        if self.get_sprite_distance(self, self.player_tank) < 100:
+        self.turn_path_bearing()
+        if self.get_sprite_distance(self, self.player_tank) < 200:
             self.turn()
         else:
-            self.move()
+            self.turn_path()
+            if self.angle - self.calc_angle < 10:
+                self.move()
 
-        if pygame.time.get_ticks() - self.time_shot > 3000 and abs(self.angle - self.player_angle()) < 50: # every 3 seconds the enemy tank can shoot and if it is looking at the player
+        if pygame.time.get_ticks() - self.time_shot > 3000: # every 3 seconds the enemy tank can shoot
             self.make_bullet = 1 # creates bullet that can hit the player
             self.time_shot = pygame.time.get_ticks()
 
@@ -64,18 +70,41 @@ class enemy_tank(pygame.sprite.Sprite):
         return self.get_distance(coord1, coord2)
 
     def move(self):
-        self.angle = self.turn_path()
         self.x += 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
         self.y += 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+        self.path.append(self.rect.center)  # adds position to list
+        self.path = self.path[-2:]  # list of last two positions
+
+        if self.check_collide():
+            self.x, self.y = self.path[0]  # if it collides with an object it goes back to its position two positions ago
+
+
+    def turn_path_bearing(self):
+        print(self.player_tank.rect.center)
+        if pygame.time.get_ticks() - self.time_calc > 1000 or self.time_calc == 0:
+            move_path = path(self.player_tank.rect.center, self.rect.center, "test")
+            next_x = move_path[0][0] + 32
+            next_y = move_path[0][1] + 32
+            rel_x = next_x - self.x
+            rel_y = next_y - self.y
+            self.time_calc = pygame.time.get_ticks()
+            self.calc_angle = -math.atan2(rel_y, rel_x) * 180 / math.pi + 90
+
 
     def turn_path(self):
-        print(self.player_tank.rect.center)
-        move_path = path(self.player_tank.rect.center, self.rect.center, "test")
-        next_x = move_path[0][0]
-        next_y = move_path[0][1]
-        rel_x = next_x - self.x
-        rel_y = next_y - self.y
-        return -math.atan2(rel_y, rel_x) * 180 / math.pi + 90
+        self.turn_path_bearing()
+        angle_diff = (self.calc_angle - self.angle + 180) % 360 - 180
+        if angle_diff >= 0: # find if it needs to turn left or right
+            direction = 1
+        else:
+            direction = -1
+        self.angle += 3 * direction # change angle
+        if self.check_collide(): # if it collides with an object while turning, do not turn
+            self.angle -= 3 * direction
+        self.angle %= 360 # keeps it within 0-360
+
+        self.image = pygame.transform.rotate(self.reg_image, self.angle)
+        self.rect = self.image.get_rect(center=(self.x, self.y))
 
 
     def turn(self):
@@ -94,7 +123,7 @@ class enemy_tank(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def check_collide(self):
-        collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.9))
+        collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.7))
         if collided:
             return 1
         else:
