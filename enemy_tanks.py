@@ -37,7 +37,7 @@ class enemy_tank(pygame.sprite.Sprite):
             self.turn()
         else:
             self.turn_path()
-            if self.angle - self.calc_angle < 10:
+            if self.angle - self.calc_angle < 10 or self.angle - self.calc_angle > 350:
                 self.move()
 
         if pygame.time.get_ticks() - self.time_shot > 3000: # every 3 seconds the enemy tank can shoot
@@ -80,9 +80,9 @@ class enemy_tank(pygame.sprite.Sprite):
 
 
     def turn_path_bearing(self):
-        print(self.player_tank.rect.center)
         if pygame.time.get_ticks() - self.time_calc > 1000 or self.time_calc == 0:
             move_path = path(self.player_tank.rect.center, self.rect.center, "test")
+            print(move_path)
             next_x = move_path[0][0] + 32
             next_y = move_path[0][1] + 32
             rel_x = next_x - self.x

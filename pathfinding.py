@@ -6,6 +6,7 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
     path = []
     points = point_array
     objects = object_array
+    closest_distance = 0
 
     return_path = []
     new_path = []
@@ -16,13 +17,22 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
         for x in range(0, 12):
             dist = get_distance(current_point, points[y][x])
             if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
+                if objects[level][y][x] == 1:
+                    closest_distance = -50
+                else:
+                    closest_distance = 30
+
+    for y in range(0, 10): # go through all the position in the array
+        for x in range(0, 12):
+            dist = get_distance(current_point, points[y][x])
+            if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
                 if objects[level][y][x] == 1: # only add it if there is not an object there
                     if points[y][x] not in path:
                         if points[y][x] == goal_point:
                             return goal_point
                         else:
                             if points[y][x] != last_point:
-                                if abs(get_distance(current_point, goal_point)) - abs(get_distance(points[y][x], goal_point)) > -50: # if it is moving away don't let it
+                                if abs(get_distance(current_point, goal_point)) - abs(get_distance(points[y][x], goal_point)) > closest_distance: # if it is moving away don't let it
                                     path_length += get_distance(current_point, points[y][x])
                                     if path_length < 2000: # if the overall path length is too long do not use it
                                         if points[y][x] not in all_paths: # if the point is already in the path do not add it
