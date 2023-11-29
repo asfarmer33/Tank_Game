@@ -33,8 +33,6 @@ def make_background(screen):
             for x in range(0, 14):
                 tile = backgrounds["test"][y][x]
                 tile_type = get_tile(tile)
-                if tile == 2:
-                    print("transition")
                 tile_type = pygame.transform.scale(tile_type, (64, 64))
                 background.blit(tile_type, (x*64, y*64))
 
@@ -62,7 +60,6 @@ def get_objects(screen):
         for x in range(0, 14):
             object = objects["test"][y][x]
             if object == 0:
-                print("building")
                 object_group.add(Can(screen, x*64, y*64))
 
     return object_group

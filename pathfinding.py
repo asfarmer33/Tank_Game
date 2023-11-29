@@ -2,11 +2,15 @@ import pygame
 import math
 
 
-def find_path(object_array, level, point_array, current_point, goal_point):
+def find_path(object_array, level, point_array, current_point, goal_point, count):
     path_not_done = True
     path = []
     points = point_array
     objects = object_array
+    count += 1
+
+    if count > 20:
+        return 0
 
     new_path = []
     for y in range(0, 10): # go through all the position in the array
@@ -26,7 +30,7 @@ def find_path(object_array, level, point_array, current_point, goal_point):
 
         return_path = []
         for pos in path:
-            point = find_path(object_array, level, point_array, pos, goal_point)
+            point = find_path(object_array, level, point_array, pos, goal_point, count)
             if point == goal_point:
                 return_path.append(pos)
                 return_path.append(goal_point)
@@ -40,7 +44,7 @@ def find_path(object_array, level, point_array, current_point, goal_point):
 
 
 
-def path():
+def path(player, enemy, level):
     objects = {"test":
         [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -71,10 +75,8 @@ def path():
         [(0, 576), (64, 576), (128, 576), (192, 576), (256, 576), (320, 576), (384, 576), (448, 576), (512, 576), (576, 576), (640, 576), (704, 576), (768, 576), (832, 576)]
         ]
 
-    player_x = 30
-    player_y = 30
-    enemy_x = 500
-    enemy_y = 550
+    player_x, player_y = player
+    enemy_x, enemy_y = enemy
 
     player_x_array = int(player_x / 64)
     player_y_array = int(player_y / 64)
@@ -86,21 +88,23 @@ def path():
     enemy_coord = points[enemy_y_array][enemy_x_array]
     player_coord = points[player_y_array][player_x_array]
 
-    print(enemy_coord)
+    print(f"Enemy: {enemy_coord}, Player: {player_coord}")
 
-    print(find_path(objects, "test", points, enemy_coord, player_coord))
+    final_path = find_path(objects, level, points, enemy_coord, player_coord, 0)
+
+    return final_path
 
 
 
 def get_distance(coord1, coord2):
     x1, y1 = coord1
     x2, y2 = coord2
-
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
+player = pygame.Rect(64,64,20,20)
+enemy = pygame.Rect(256, 448, 20, 20)
 
-path()
-
+print(path(player.center, enemy.center, "test"))
 
 
 
