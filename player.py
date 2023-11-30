@@ -71,7 +71,7 @@ class Player(pygame.sprite.Sprite):
             self.x, self.y = self.path[0]
 
     def check_collide(self):
-        collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.9))
+        collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.8))
         if collided:
             return 1
         else:

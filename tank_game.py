@@ -26,6 +26,9 @@ object_group = get_objects(screen)
 
 player_tank = Player(screen, "images/tank_blue.png", 100, 100, object_group)
 
+enemy_group.add(enemy_tank(screen, 300, 500, player_tank, object_group))
+enemy_group.add(enemy_tank(screen, 400, 600, player_tank, object_group))
+
 
 running = True
 while running:
@@ -50,8 +53,6 @@ while running:
 
     screen.blit(background, (0, 0))
 
-    if len(enemy_group) < 1:
-        enemy_group.add(enemy_tank(screen, 300, 500, player_tank, object_group))
 
 
 
