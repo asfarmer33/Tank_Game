@@ -1,5 +1,6 @@
 import pygame
 import math
+import random
 
 
 def find_path(object_array, level, point_array, current_point, goal_point, last_point, path_length, all_paths):
@@ -14,7 +15,7 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
         return_path.append(current_point)
         return return_path
     for y in range(0, 10): # go through all the position in the array
-        for x in range(0, 12):
+        for x in range(0, 14):
             dist = get_distance(current_point, points[y][x])
             if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
                 if objects[level][y][x] == 0:
@@ -22,8 +23,9 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
     if closest_distance == 0:
         closest_distance = 20
 
+
     for y in range(0, 10): # go through all the position in the array
-        for x in range(0, 12):
+        for x in range(0, 14):
             dist = get_distance(current_point, points[y][x])
             if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
                 if objects[level][y][x] == 1: # only add it if there is not an object there
@@ -45,6 +47,8 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
         if items not in path:
             path.append(items)
 
+    random.shuffle(path)
+
     for pos in path:
         point = find_path(object_array, level, point_array, pos, goal_point, current_point, path_length, all_paths)
         if point == goal_point:
@@ -60,17 +64,17 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
 
 
 
-def path(player, enemy, level):
+def path(player, enemy, level, last_player_pos, last_path):
     objects = {"test":
         [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+            [1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1],
+            [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
@@ -93,6 +97,7 @@ def path(player, enemy, level):
 
     player_x, player_y = player
     enemy_x, enemy_y = enemy
+    last_player_x, last_player_y = last_player_pos
 
     player_x_array = int(player_x / 64)
     player_y_array = int(player_y / 64)
@@ -101,14 +106,30 @@ def path(player, enemy, level):
     enemy_x_array = int(enemy_x / 64)
     enemy_y_array = int(enemy_y / 64)
 
+    last_x_array = int(last_player_x / 64)
+    last_y_array = int(last_player_y / 64)
+
     enemy_coord = points[enemy_y_array][enemy_x_array]
     player_coord = points[player_y_array][player_x_array]
 
     #print(f"Enemy: {enemy_coord}, Player: {player_coord}")
 
-    final_path = find_path(objects, level, points, enemy_coord, player_coord, 0, 0, [])
+    if last_x_array == player_x_array and last_y_array == player_y_array:
+        return last_path[1:]
 
-    return final_path
+    all_paths = []
+    for x in range(50):
+        final_path = find_path(objects, level, points, enemy_coord, player_coord, 0, 0, [])
+        all_paths.append(final_path)
+    try:
+        shortest_path = all_paths[0]
+        for options in all_paths:
+            if len(options) <= len(shortest_path):
+                shortest_path = options[:]
+    except:
+        shortest_path = []
+
+    return shortest_path
 
 
 
@@ -120,7 +141,7 @@ def get_distance(coord1, coord2):
 player = pygame.Rect(64, 64, 20,20)
 enemy = pygame.Rect(256, 448, 20, 20)
 
-print(path(player.center, enemy.center, "test"))
+print(path(player.center, enemy.center, "test", (0,0), (0,0)))
 
 
 

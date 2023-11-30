@@ -28,6 +28,7 @@ class enemy_tank(pygame.sprite.Sprite):
         self.calc_angle = 0
         self.path = []
         self.old_path = []
+        self.last_player_pos = (0, 0)
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
@@ -48,9 +49,11 @@ class enemy_tank(pygame.sprite.Sprite):
         if self.get_sprite_distance(self, self.player_tank) < 500 and len(self.path) < 4:
             self.turn()
         else:
-            self.turn_path()
-            if self.angle - self.calc_angle < 10 or self.angle - self.calc_angle > 350:
+            if abs(self.angle - self.calc_angle) < 3 or abs(self.angle - self.calc_angle) > 357:
                 self.move()
+            else:
+                self.turn_path()
+
 
         if pygame.time.get_ticks() - self.time_shot > 3000: # every 3 seconds the enemy tank can shoot
             self.make_bullet = 1 # creates bullet that can hit the player
@@ -84,11 +87,13 @@ class enemy_tank(pygame.sprite.Sprite):
     def move(self):
         self.x += 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
         self.y += 1 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+        self.rect.center = self.x, self.y
+
 
     def turn_path_bearing(self):
-        move_path = []
         if pygame.time.get_ticks() - self.time_calc > 1000 or self.time_calc == 0:
-            move_path = path(self.player_tank.rect.center, self.rect.center, "test")
+            move_path = path(self.player_tank.rect.center, self.rect.center, "test", self.last_player_pos, self.old_path)
+            self.last_player_pos = self.player_tank.rect.center
             self.old_path = move_path[:]
             try:
                 if len(self.old_path) > 1:
@@ -111,8 +116,6 @@ class enemy_tank(pygame.sprite.Sprite):
         else:
             direction = -1
         self.angle += 3 * direction # change angle
-        if self.check_collide(): # if it collides with an object while turning, do not turn
-            self.angle -= 3 * direction
         self.angle %= 360 # keeps it within 0-360
 
         self.image = pygame.transform.rotate(self.reg_image, self.angle)
@@ -127,8 +130,6 @@ class enemy_tank(pygame.sprite.Sprite):
         else:
             direction = -1
         self.angle += self.turn_speed * direction # change angle
-        if self.check_collide(): # if it collides with an object while turning, do not turn
-            self.angle -= self.turn_speed * direction
         self.angle %= 360 # keeps it within 0-360
 
         self.image = pygame.transform.rotate(self.reg_image, self.angle)
