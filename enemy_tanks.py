@@ -24,26 +24,28 @@ class enemy_tank(pygame.sprite.Sprite):
         self.time_shot = 0
         self.time_turn = 0
         self.make_bullet = 0
-        self.path = []
         self.time_calc = 0
         self.calc_angle = 0
+        self.path = []
         self.old_path = []
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
 
-        move_path = path(self.player_tank.rect.center, self.rect.center, "test")
-
-        for x in move_path:
-            if len(move_path) > 2:
-                image = pygame.image.load("images/green_circle.png")
-                new_rect = image.get_rect()
-                new_rect.center = x
-                self.screen.blit(image, new_rect)
+        try:
+            if len(self.path) > 2:
+                for x in self.path:
+                    image = pygame.image.load("images/green_circle.png")
+                    new_rect = image.get_rect()
+                    new_rect.centerx = x[0] + 32
+                    new_rect.centery = x[1] + 32
+                    self.screen.blit(image, new_rect)
+        except:
+            print("error")
 
     def update(self):
         self.turn_path_bearing()
-        if self.get_sprite_distance(self, self.player_tank) < 200:
+        if self.get_sprite_distance(self, self.player_tank) < 500 and len(self.path) < 4:
             self.turn()
         else:
             self.turn_path()
@@ -87,16 +89,18 @@ class enemy_tank(pygame.sprite.Sprite):
         move_path = []
         if pygame.time.get_ticks() - self.time_calc > 1000 or self.time_calc == 0:
             move_path = path(self.player_tank.rect.center, self.rect.center, "test")
-            if len(self.old_path) <= len(move_path) and self.old_path and len(move_path) - len(self.old_path) < 3:
-                move_path = self.old_path[:]
-            if len(move_path) > 1:
-                next_x = move_path[0][0] + 32
-                next_y = move_path[0][1] + 32
-                rel_x = next_x - self.x
-                rel_y = next_y - self.y
-                self.time_calc = pygame.time.get_ticks()
-                self.calc_angle = -math.atan2(rel_y, rel_x) * 180 / math.pi + 90
-                self.old_path = move_path[:]
+            self.old_path = move_path[:]
+            try:
+                if len(self.old_path) > 1:
+                    next_x = self.old_path[0][0] + 32
+                    next_y = self.old_path[0][1] + 32
+                    rel_x = next_x - self.x
+                    rel_y = next_y - self.y
+                    self.time_calc = pygame.time.get_ticks()
+                    self.calc_angle = -math.atan2(rel_y, rel_x) * 180 / math.pi + 90
+                    self.path = self.old_path[:]
+            except:
+                print(move_path)
 
 
     def turn_path(self):
