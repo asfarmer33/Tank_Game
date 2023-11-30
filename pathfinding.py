@@ -118,7 +118,7 @@ def path(player, enemy, level, last_player_pos, last_path):
         return last_path[1:]
 
     all_paths = []
-    for x in range(50):
+    for x in range(10):
         final_path = find_path(objects, level, points, enemy_coord, player_coord, 0, 0, [])
         all_paths.append(final_path)
     try:

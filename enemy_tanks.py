@@ -11,6 +11,7 @@ class enemy_tank(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         self.reg_image = pygame.image.load('images/tank_sand.png')
+        self.reg_image = pygame.transform.scale(self.reg_image, (40, 40))
         self.image = self.reg_image
         self.rect = self.image.get_rect()
         self.rect.centerx = self.x

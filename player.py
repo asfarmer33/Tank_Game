@@ -3,10 +3,11 @@ import math
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, screen, image, x, y, object_group):
+    def __init__(self, screen, image, x, y, object_group, player):
         super().__init__()
         self.screen = screen
         self.reg_image = pygame.image.load(image)
+        self.reg_image = pygame.transform.scale(self.reg_image, (40, 40))
         self.image = self.reg_image
         self.x = x
         self.y = y
@@ -18,11 +19,28 @@ class Player(pygame.sprite.Sprite):
         self.rect.centery = self.y
         self.object_group = object_group
         self.path = []
+        self.player = player
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
     def update(self):
         self.move()
+
+        keys = pygame.key.get_pressed()  # list of pressed keys
+        if self.player == 1:
+            if keys[pygame.K_LEFT]:
+                self.angle += 1.4
+                self.turn(1.4)
+            elif keys[pygame.K_RIGHT]:
+                self.angle -= 1.4
+                self.turn(-1.4)
+        else:
+            if keys[pygame.K_a]:
+                self.angle += 1.4
+                self.turn(1.4)
+            elif keys[pygame.K_d]:
+                self.angle -= 1.4
+                self.turn(-1.4)
 
         self.rect.centerx = self.x
         self.rect.centery = self.y
@@ -39,13 +57,20 @@ class Player(pygame.sprite.Sprite):
 
     def move(self):
         keys = pygame.key.get_pressed()  # list of pressed keys
-
-        if keys[pygame.K_UP]:
-            self.speed = 3
-        elif keys[pygame.K_DOWN]:
-            self.speed = -3
+        if self.player == 1:
+            if keys[pygame.K_UP]:
+                self.speed = 3
+            elif keys[pygame.K_DOWN]:
+                self.speed = -3
+            else:
+                self.speed = 0
         else:
-            self.speed = 0
+            if keys[pygame.K_w]:
+                self.speed = 3
+            elif keys[pygame.K_s]:
+                self.speed = -3
+            else:
+                self.speed = 0
 
         self.movex()
         self.movey()
@@ -76,4 +101,5 @@ class Player(pygame.sprite.Sprite):
             return 1
         else:
             return 0
+
 

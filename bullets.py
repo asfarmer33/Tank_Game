@@ -3,13 +3,19 @@ import math
 
 class Bullets(pygame.sprite.Sprite):
 
-    def __init__(self, screen, x, y, angle, enemy_group, object_group, enemy_bullet):
+    def __init__(self, screen, x, y, angle, enemy_group, object_group, player_group, enemy_bullet, tank):
         super().__init__()
         self.screen = screen
         self.x = x
         self.y = y
         self.angle = angle
-        self.reg_image = pygame.image.load('images/blue_bullet.png')
+        self.tank = tank
+        if self.tank == 1:
+            self.reg_image = pygame.image.load('images/blue_bullet.png')
+        elif self.tank == 2:
+            self.reg_image = pygame.image.load('images/green_bullet.png')
+        elif self.tank == 3:
+            self.reg_image = pygame.image.load('images/sand_bullet.png')
         self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
         self.bounce = 0
         self.rect = self.image.get_rect()
@@ -17,8 +23,10 @@ class Bullets(pygame.sprite.Sprite):
         self.rect.centery = self.y
         self.enemy_group = enemy_group
         self.object_group = object_group
+        self.player_group = player_group
         self.collision_radius = self.reg_image.get_height() * 2
         self.enemy_bullet = enemy_bullet
+        self.time_alive = pygame.time.get_ticks()
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
@@ -73,5 +81,20 @@ class Bullets(pygame.sprite.Sprite):
             if self.enemy_bullet == 1:
                 for enemy in hit_enemy_list:
                     enemy.kill()
+                self.kill()
+
+        hit_enemy_list = pygame.sprite.spritecollide(self, self.player_group, False, collided=self.get_sprite_distance)
+        if pygame.time.get_ticks() - self.time_alive > 200:
+            if hit_enemy_list:
+                if self.enemy_bullet == 1:
+                    for player in hit_enemy_list:
+                        player.kill()
+                    self.kill()
+
+        hit_enemy_list = pygame.sprite.spritecollide(self, self.player_group, False, collided=self.get_sprite_distance)
+        if hit_enemy_list:
+            if self.enemy_bullet == 0:
+                for player in hit_enemy_list:
+                    player.kill()
                 self.kill()
 
