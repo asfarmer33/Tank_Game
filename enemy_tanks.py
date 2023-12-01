@@ -143,4 +143,8 @@ class enemy_tank(pygame.sprite.Sprite):
             return 0
 
 
+    def check_shoot(self):
+        return 0
+
+
 
