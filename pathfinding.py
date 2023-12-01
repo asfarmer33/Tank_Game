@@ -11,7 +11,7 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
 
     return_path = []
     new_path = []
-    if current_point == goal_point:
+    if current_point == goal_point: # if the player is on the enemy just return the current point as the path
         return_path.append(current_point)
         return return_path
     for y in range(0, 10): # go through all the position in the array
@@ -29,11 +29,11 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
             dist = get_distance(current_point, points[y][x])
             if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
                 if objects[level][y][x] == 1: # only add it if there is not an object there
-                    if points[y][x] not in path:
-                        if points[y][x] == goal_point:
+                    if points[y][x] not in path: # if the points is not already recorded
+                        if points[y][x] == goal_point: # if the point is the goal point return it
                             return goal_point
                         else:
-                            if points[y][x] != last_point:
+                            if points[y][x] != last_point: # makes sure it is not the same as the last point so it does not go back and forth
                                 if abs(get_distance(current_point, goal_point)) - abs(get_distance(points[y][x], goal_point)) > closest_distance: # if it is moving away don't let it
                                     path_length += get_distance(current_point, points[y][x])
                                     if path_length < 2000: # if the overall path length is too long do not use it
@@ -43,15 +43,15 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
 
 
 
-    for items in new_path:
+    for items in new_path: # copy the path over if it is not already in the recorded paths
         if items not in path:
             path.append(items)
 
-    random.shuffle(path)
+    random.shuffle(path) # shuffle the points so we can get different paths in order to find the best
 
-    for pos in path:
-        point = find_path(object_array, level, point_array, pos, goal_point, current_point, path_length, all_paths)
-        if point == goal_point:
+    for pos in path: # for all the new paths run the equation
+        point = find_path(object_array, level, point_array, pos, goal_point, current_point, path_length, all_paths) # recursion
+        if point == goal_point: # if the point is the goal point it needs to be returned a little differently
             return_path.append(pos)
             return_path.append(goal_point)
             return return_path
@@ -65,6 +65,7 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
 
 
 def path(player, enemy, level, last_player_pos, last_path):
+    # array of objects
     objects = {"test":
         [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -82,6 +83,7 @@ def path(player, enemy, level, last_player_pos, last_path):
 
     }
 
+    # array of points for enemy to go to
     points = [
         [(0, 0), (64, 0), (128, 0), (192, 0), (256, 0), (320, 0), (384, 0), (448, 0), (512, 0), (576, 0), (640, 0), (704, 0), (768, 0), (832, 0)],
         [(0, 64), (64, 64), (128, 64), (192, 64), (256, 64), (320, 64), (384, 64), (448, 64), (512, 64), (576, 64), (640, 64), (704, 64), (768, 64), (832, 64)],
@@ -99,7 +101,7 @@ def path(player, enemy, level, last_player_pos, last_path):
     enemy_x, enemy_y = enemy
     last_player_x, last_player_y = last_player_pos
 
-    player_x_array = int(player_x / 64)
+    player_x_array = int(player_x / 64) # find which the x and y indexes
     player_y_array = int(player_y / 64)
 
 
@@ -109,19 +111,19 @@ def path(player, enemy, level, last_player_pos, last_path):
     last_x_array = int(last_player_x / 64)
     last_y_array = int(last_player_y / 64)
 
-    enemy_coord = points[enemy_y_array][enemy_x_array]
+    enemy_coord = points[enemy_y_array][enemy_x_array] # find the general coordinate in the position array
     player_coord = points[player_y_array][player_x_array]
 
     #print(f"Enemy: {enemy_coord}, Player: {player_coord}")
 
-    if last_x_array == player_x_array and last_y_array == player_y_array:
+    if last_x_array == player_x_array and last_y_array == player_y_array: # if the player is in the same square just return the same path, but one shroter
         return last_path[1:]
 
     all_paths = []
-    for x in range(10):
+    for x in range(10): # caclulate 10 total paths and then find the shortest (can change the depth)
         final_path = find_path(objects, level, points, enemy_coord, player_coord, 0, 0, [])
         all_paths.append(final_path)
-    try:
+    try: # sometimes it has trouble finding, so just do not run it and return a blank path
         shortest_path = all_paths[0]
         for options in all_paths:
             if len(options) <= len(shortest_path):
@@ -138,7 +140,7 @@ def get_distance(coord1, coord2):
     x2, y2 = coord2
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
-player = pygame.Rect(64, 64, 20,20)
+player = pygame.Rect(64, 64, 20,20) # for testing
 enemy = pygame.Rect(256, 448, 20, 20)
 
 print(path(player.center, enemy.center, "test", (0,0), (0,0)))

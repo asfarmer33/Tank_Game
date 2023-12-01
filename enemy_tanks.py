@@ -17,7 +17,7 @@ class enemy_tank(pygame.sprite.Sprite):
         self.rect.centerx = self.x
         self.rect.centery = self.y
         self.angle = 0
-        self.turn_speed = 0.5
+        self.turn_speed = 0.8
         self.player_tank = player_tank
         self.player_group = pygame.sprite.Group()
         self.player_group.add(player_tank)
