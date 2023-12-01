@@ -5,11 +5,10 @@ from pathfinding import path
 
 class enemy_tank(pygame.sprite.Sprite):
 
-    def __init__(self, screen, x, y, player_tank, object_group):
+    def __init__(self, screen, pos, player_tank, object_group):
         super().__init__()
         self.screen = screen
-        self.x = x
-        self.y = y
+        self.x, self.y = pos
         self.reg_image = pygame.image.load('images/tank_sand.png')
         self.reg_image = pygame.transform.scale(self.reg_image, (40, 40))
         self.image = self.reg_image
@@ -93,7 +92,7 @@ class enemy_tank(pygame.sprite.Sprite):
 
     def turn_path_bearing(self):
         if pygame.time.get_ticks() - self.time_calc > 1000 or self.time_calc == 0:
-            move_path = path(self.player_tank.rect.center, self.rect.center, "test", self.last_player_pos, self.old_path)
+            move_path = path(self.player_tank.rect.center, self.rect.center, 1, self.last_player_pos, self.old_path)
             self.last_player_pos = self.player_tank.rect.center
             self.old_path = move_path[:]
             try:

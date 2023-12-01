@@ -1,9 +1,10 @@
 import pygame
 import math
 import random
+from levels import *
 
 
-def find_path(object_array, level, point_array, current_point, goal_point, last_point, path_length, all_paths):
+def find_path(object_array, point_array, current_point, goal_point, last_point, path_length, all_paths):
     path = []
     points = point_array
     objects = object_array
@@ -18,7 +19,7 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
         for x in range(0, 14):
             dist = get_distance(current_point, points[y][x])
             if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
-                if objects[level][y][x] == 0:
+                if objects[y][x] == 0:
                     closest_distance = -50
     if closest_distance == 0:
         closest_distance = 20
@@ -28,7 +29,7 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
         for x in range(0, 14):
             dist = get_distance(current_point, points[y][x])
             if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
-                if objects[level][y][x] == 1: # only add it if there is not an object there
+                if objects[y][x] == 1: # only add it if there is not an object there
                     if points[y][x] not in path: # if the points is not already recorded
                         if points[y][x] == goal_point: # if the point is the goal point return it
                             return goal_point
@@ -50,7 +51,7 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
     random.shuffle(path) # shuffle the points so we can get different paths in order to find the best
 
     for pos in path: # for all the new paths run the equation
-        point = find_path(object_array, level, point_array, pos, goal_point, current_point, path_length, all_paths) # recursion
+        point = find_path(object_array, point_array, pos, goal_point, current_point, path_length, all_paths) # recursion
         if point == goal_point: # if the point is the goal point it needs to be returned a little differently
             return_path.append(pos)
             return_path.append(goal_point)
@@ -66,22 +67,7 @@ def find_path(object_array, level, point_array, current_point, goal_point, last_
 
 def path(player, enemy, level, last_player_pos, last_path):
     # array of objects
-    objects = {"test":
-        [
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1],
-            [1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
-            [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1],
-            [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-
-        ]
-
-    }
+    objects = get_object_level(level)
 
     # array of points for enemy to go to
     points = [
@@ -121,7 +107,7 @@ def path(player, enemy, level, last_player_pos, last_path):
 
     all_paths = []
     for x in range(10): # caclulate 10 total paths and then find the shortest (can change the depth)
-        final_path = find_path(objects, level, points, enemy_coord, player_coord, 0, 0, [])
+        final_path = find_path(objects, points, enemy_coord, player_coord, 0, 0, [])
         all_paths.append(final_path)
     try: # sometimes it has trouble finding, so just do not run it and return a blank path
         shortest_path = all_paths[0]

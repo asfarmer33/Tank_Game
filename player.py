@@ -3,14 +3,13 @@ import math
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, screen, image, x, y, object_group, player):
+    def __init__(self, screen, image, pos, object_group, player):
         super().__init__()
         self.screen = screen
         self.reg_image = pygame.image.load(image)
         self.reg_image = pygame.transform.scale(self.reg_image, (40, 40))
         self.image = self.reg_image
-        self.x = x
-        self.y = y
+        self.x, self.y = pos
         self.rotate = 0
         self.speed = 0
         self.angle = 0
