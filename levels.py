@@ -33,6 +33,9 @@ def get_object_level(level):
 
     }
 
+    if level > 50 and level != 99:
+        level -= 50
+
     return objects[str(level)]
 
 
@@ -67,14 +70,24 @@ def get_background_level(level):
             ]
 
     }
+
+    if level > 50 and level != 99:
+        level -= 50
+
     return backgrounds[str(level)]
 
 def get_enemy_pos(level):
     tank_pos = {"99": [30, 600], "1": [700, 500]}
 
+    if level > 50 and level != 99:
+        level -= 50
+
     return tank_pos[str(level)]
 
 def get_player_pos(level):
     player_pos = {"99": [30, 30], "1": [100, 100]}
+
+    if level > 50 and level != 99:
+        level -= 50
 
     return player_pos[str(level)]

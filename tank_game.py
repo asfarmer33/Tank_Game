@@ -28,20 +28,30 @@ while running:
     if level[0] == 0:
         background = start_background(screen)
         while level[0] == 0:
+            print(pygame.mouse.get_pos())
             run_start_menu(screen, background, FPS, level)
-    if level[0] > 0:
+    if level[0] > 0 and level[0] < 50:
         background = make_background(screen, level[0])
-
 
         object_group = get_objects(screen, level[0])
 
         player_tank = Player(screen, "images/tank_blue.png", get_player_pos(level[0]), object_group, 1)
-        # player2_tank = Player(screen, "images/tank_green.png", (0,0), object_group, 2)
-
         player_group.add(player_tank)
-        # player_group.add(player2_tank)
 
         enemy_group.add(enemy_tank(screen, get_enemy_pos(level[0]), player_tank, object_group, level[0]))
         while level[0] > 0:
-            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS)
+            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level)
+    elif level[0] >= 50:
+        background = make_background(screen, level[0])
+
+        object_group = get_objects(screen, level[0])
+
+        player_tank = Player(screen, "images/tank_blue.png", get_player_pos(level[0]), object_group, 1)
+        player2_tank = Player(screen, "images/tank_green.png", get_enemy_pos(level[0]), object_group, 2)
+
+        player_group.add(player_tank)
+        player_group.add(player2_tank)
+
+        while level[0] >= 50:
+            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level)
 
