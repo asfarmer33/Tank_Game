@@ -19,6 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.object_group = object_group
         self.path = []
         self.player = player
+        self.time_shot = 0
+        self.make_bullet = 0
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
@@ -43,6 +45,10 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.centerx = self.x
         self.rect.centery = self.y
+
+        if pygame.time.get_ticks() - self.time_shot > 1500: # every 3 seconds the enemy tank can shoot
+            self.make_bullet = 1 # creates bullet that can hit the player
+            self.time_shot = pygame.time.get_ticks()
 
     def turn(self, turn):
         original_rect = self.rect
@@ -93,6 +99,13 @@ class Player(pygame.sprite.Sprite):
             self.y += self.speed * math.sin(math.pi/2 - self.angle*math.pi/180)
         else:
             self.x, self.y = self.path[0]
+
+    def create_bullet(self):
+        if self.make_bullet == 1:
+            self.make_bullet = 0
+            return 1
+        else:
+            return 0
 
     def check_collide(self):
         collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.8))

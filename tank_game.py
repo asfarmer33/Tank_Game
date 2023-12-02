@@ -46,6 +46,10 @@ while running:
         enemy_group.add(enemy_tank(screen, get_enemy_pos(level[0]), player_tank, object_group, level[0]))
         while level[0] > 1:
             run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com)
+    elif level[0] == 51:
+        background = two_player_background(screen)
+        while level[0] == 51:
+            run_two_player_level_menu(screen, background, FPS, level)
     elif level[0] >= 51:
         background = make_background(screen, level[0])
 
