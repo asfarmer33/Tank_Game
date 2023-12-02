@@ -91,6 +91,123 @@ def start_background(screen):
     return background
 
 
+def one_player_background(screen, lev_com):
+    WIDTH = screen.get_width()
+    HEIGHT = screen.get_height()
+    background = pygame.Surface((WIDTH, HEIGHT))
+    background.fill((83, 98, 103))
+
+    yb = "images/yellow_button00.png"
+    rb = "images/red_button00.png"
+
+    my_font_reg = pygame.font.SysFont('fonts/kenvector_future.ttf', 75)
+
+    lev1_img = pygame.image.load(yb)
+    lev1_img = pygame.transform.scale(lev1_img, (300, 75))
+
+    lev1_text = my_font_reg.render('Level One', True, (255, 255, 255))
+    lev1_text_back = my_font_reg.render('Level One', True, (100, 100, 100))
+
+    lev2_text = my_font_reg.render('Level Two', True, (255, 255, 255))
+    lev2_text_back = my_font_reg.render('Level Two', True, (100, 100, 100))
+
+    lev3_text = my_font_reg.render('Level Three', True, (255, 255, 255))
+    lev3_text_back = my_font_reg.render('Level Three', True, (100, 100, 100))
+
+    lev4_text = my_font_reg.render('Level Four', True, (255, 255, 255))
+    lev4_text_back = my_font_reg.render('Level Four', True, (100, 100, 100))
+
+    lev5_text = my_font_reg.render('Level Five', True, (255, 255, 255))
+    lev5_text_back = my_font_reg.render('Level Five', True, (100, 100, 100))
+
+    lev6_text = my_font_reg.render('Level Six', True, (255, 255, 255))
+    lev6_text_back = my_font_reg.render('Level Six', True, (100, 100, 100))
+
+    lev7_text = my_font_reg.render('Level Seven', True, (255, 255, 255))
+    lev7_text_back = my_font_reg.render('Level Seven', True, (100, 100, 100))
+
+    lev8_text = my_font_reg.render('Level Eight', True, (255, 255, 255))
+    lev8_text_back = my_font_reg.render('Level Eight', True, (100, 100, 100))
+
+    lev9_text = my_font_reg.render('Level Nine', True, (255, 255, 255))
+    lev9_text_back = my_font_reg.render('Level Nine', True, (100, 100, 100))
+
+    lev10_text = my_font_reg.render('Level Ten', True, (255, 255, 255))
+    lev10_text_back = my_font_reg.render('Level Ten', True, (100, 100, 100))
+
+    if lev_com[0] > 0:
+        lev2_img = pygame.image.load(yb)
+    else:
+        lev2_img = pygame.image.load(rb)
+    lev2_img = pygame.transform.scale(lev2_img, (300, 75))
+
+    if lev_com[0] > 1:
+        lev3_img = pygame.image.load(yb)
+    else:
+        lev3_img = pygame.image.load(rb)
+    lev3_img = pygame.transform.scale(lev3_img, (300, 75))
+
+    if lev_com[0] > 2:
+        lev4_img = pygame.image.load(yb)
+    else:
+        lev4_img = pygame.image.load(rb)
+    lev4_img = pygame.transform.scale(lev4_img, (300, 75))
+
+    if lev_com[0] > 3:
+        lev5_img = pygame.image.load(yb)
+    else:
+        lev5_img = pygame.image.load(rb)
+    lev5_img = pygame.transform.scale(lev5_img, (300, 75))
+
+    if lev_com[0] > 4:
+        lev6_img = pygame.image.load(yb)
+    else:
+        lev6_img = pygame.image.load(rb)
+    lev6_img = pygame.transform.scale(lev6_img, (300, 75))
+
+    if lev_com[0] > 5:
+        lev7_img = pygame.image.load(yb)
+    else:
+        lev7_img = pygame.image.load(rb)
+    lev7_img = pygame.transform.scale(lev7_img, (300, 75))
+
+    if lev_com[0] > 6:
+        lev8_img = pygame.image.load(yb)
+    else:
+        lev8_img = pygame.image.load(rb)
+    lev8_img = pygame.transform.scale(lev8_img, (300, 75))
+
+    if lev_com[0] > 7:
+        lev9_img = pygame.image.load(yb)
+    else:
+        lev9_img = pygame.image.load(rb)
+    lev9_img = pygame.transform.scale(lev9_img, (300, 75))
+
+    if lev_com[0] > 8:
+        lev10_img = pygame.image.load(yb)
+    else:
+        lev10_img = pygame.image.load(rb)
+    lev10_img = pygame.transform.scale(lev10_img, (300, 75))
+
+    background.blit(lev1_img, (70, 100))
+    background.blit(lev1_text_back, (97, 110 + 2))
+    background.blit(lev1_text, (95, 110))
+
+    background.blit(lev2_img, (70, 100 + 75 * 1.5))
+    background.blit(lev2_text_back, (97, 100 + 75 * 1.5 + 12))
+    background.blit(lev2_text, (97, 100 + 75 * 1.5 + 10))
+
+    background.blit(lev3_img, (70, 100 + 75 * 3))
+    background.blit(lev4_img, (70, 100 + 75 * 4.5))
+    background.blit(lev5_img, (70, 100 + 75 * 6))
+    background.blit(lev6_img, (526, 100))
+    background.blit(lev7_img, (526, 100 + 75 * 1.5))
+    background.blit(lev8_img, (526, 100 + 75 * 3))
+    background.blit(lev9_img, (526, 100 + 75 * 4.5))
+    background.blit(lev10_img, (526, 100 + 75 * 6))
+
+    return background
+
 
 def get_tile(tile_num):
     if tile_num == 0:

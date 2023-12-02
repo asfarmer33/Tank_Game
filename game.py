@@ -1,7 +1,7 @@
 import pygame
 from bullets import Bullets
 
-def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level):
+def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -32,6 +32,8 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
 
     if level[0] < 50:
         if len(enemy_group) <= 0 or len(player_group) <= 0:
+            if len(enemy_group) <= 0:
+                lev_com[0] += 1
             level[0] = 0
     else:
         if len(player_group) <= 1:
@@ -68,4 +70,16 @@ def run_start_menu(screen, background, FPS, level):
     pygame.display.flip()
     pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
     FPS.tick(60)
+
+def run_one_player_level_menu(screen, background, FPS, level):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+
+    screen.blit(background, (0, 0))
+
+    pygame.display.flip()
+    pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
+    FPS.tick(60)
+
 
