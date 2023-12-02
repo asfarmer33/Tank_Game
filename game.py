@@ -1,7 +1,7 @@
 import pygame
 from bullets import Bullets
 
-def run_game(screen, player_group, enemy_group, bullet_group, object_group, background):
+def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -30,8 +30,31 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
     [enemy.draw() for enemy in enemy_group]
     [player.draw() for player in player_group]
 
+    pygame.display.flip()
+    pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
+    FPS.tick(60)
 
 
-def run_start_menu(screen, background):
+
+def run_start_menu(screen, background, FPS, level):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+
+    if pygame.mouse.get_pressed()[0]:
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        if mouse_x > (screen.get_width() / 2 - 190/2) and mouse_x < (screen.get_width() / 2 + 190/2):
+            if mouse_y < (screen.get_height() / 2 + 49) and mouse_y > (screen.get_height() / 2):
+                print("test")
+                level[0] = 1
+        if mouse_x > (screen.get_width() / 2 - 190/2) and mouse_x < (screen.get_width() / 2 + 190/2):
+            if mouse_y < (screen.get_height() / 2 + 49*3) and mouse_y > (screen.get_height() / 2 + 49*2):
+                print("test2")
+
+
     screen.blit(background, (0, 0))
+
+    pygame.display.flip()
+    pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
+    FPS.tick(60)
 

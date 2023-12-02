@@ -34,6 +34,24 @@ def start_background(screen):
     HEIGHT = screen.get_height()
     background = pygame.Surface((WIDTH, HEIGHT))
 
+    one_player_box_img = pygame.image.load("images/green_button00.png")
+    one_player_box_rect = one_player_box_img.get_rect()
+    one_player_box_rect.x = WIDTH/2 - one_player_box_rect.width/2
+    one_player_box_rect.y = HEIGHT/2
+
+    two_player_box_img = pygame.image.load("images/green_button00.png")
+    two_player_box_rect = two_player_box_img.get_rect()
+    two_player_box_rect.x = WIDTH / 2 - one_player_box_rect.width / 2
+    two_player_box_rect.y = HEIGHT / 2 + two_player_box_rect.height * 2
+
+    print(one_player_box_rect.width, two_player_box_rect.height)
+
+    background.fill((83, 98, 103))
+    background.blit(one_player_box_img, (one_player_box_rect.x, one_player_box_rect.y))
+    background.blit(two_player_box_img, (two_player_box_rect.x, two_player_box_rect.y))
+
+
+
     return background
 
 
