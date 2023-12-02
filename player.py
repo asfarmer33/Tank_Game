@@ -8,6 +8,13 @@ class Player(pygame.sprite.Sprite):
         self.screen = screen
         self.reg_image = pygame.image.load(image)
         self.reg_image = pygame.transform.scale(self.reg_image, (40, 40))
+        if image == "images/tank_blue.png":
+            self.reg_shoot_img = pygame.image.load("images/tank_blue_shoot.png")
+            self.reg_shoot_img = pygame.transform.scale(self.reg_shoot_img, (40, 40))
+        else:
+            self.reg_shoot_img = pygame.image.load("images/tank_green_shoot.png")
+            self.reg_shoot_img = pygame.transform.scale(self.reg_shoot_img, (40, 40))
+        self.reg_not_shoot_img = self.reg_image
         self.image = self.reg_image
         self.x, self.y = pos
         self.rotate = 0
@@ -21,9 +28,16 @@ class Player(pygame.sprite.Sprite):
         self.player = player
         self.time_shot = 0
         self.make_bullet = 0
-
+        self.show_fire = 0
     def draw(self):
+        if self.show_fire:
+            self.reg_image = self.reg_shoot_img
+        else:
+            self.reg_image = self.reg_not_shoot_img
+        self.image = pygame.transform.rotate(self.reg_image, self.angle)
+        self.rect = self.image.get_rect(center=(self.x, self.y))
         self.screen.blit(self.image, self.rect)
+
     def update(self):
         self.move()
 
@@ -46,14 +60,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = self.x
         self.rect.centery = self.y
 
-        if pygame.time.get_ticks() - self.time_shot > 1500: # every 3 seconds the enemy tank can shoot
+        if pygame.time.get_ticks() - self.time_shot > 3000: # every 3 seconds the enemy tank can shoot
+            self.show_fire = 1
             self.make_bullet = 1 # creates bullet that can hit the player
             self.time_shot = pygame.time.get_ticks()
 
+
     def turn(self, turn):
         original_rect = self.rect
-        self.image = pygame.transform.rotate(self.reg_image, self.angle)
-        self.rect = self.image.get_rect(center = (self.x, self.y))
         self.angle %= 360
         collided = pygame.sprite.spritecollide(self, self.object_group, False)
         if collided:
@@ -103,6 +117,7 @@ class Player(pygame.sprite.Sprite):
     def create_bullet(self):
         if self.make_bullet == 1:
             self.make_bullet = 0
+            self.show_fire = 0
             return 1
         else:
             return 0

@@ -3,7 +3,7 @@ import math
 
 class Bullets(pygame.sprite.Sprite):
 
-    def __init__(self, screen, x, y, angle, enemy_group, object_group, player_group, enemy_bullet, tank):
+    def __init__(self, screen, x, y, angle, enemy_group, object_group, player_group, bullet_group, enemy_bullet, tank):
         super().__init__()
         self.screen = screen
         self.x = x
@@ -24,6 +24,7 @@ class Bullets(pygame.sprite.Sprite):
         self.enemy_group = enemy_group
         self.object_group = object_group
         self.player_group = player_group
+        self.bullet_group = bullet_group
         self.collision_radius = self.reg_image.get_height() * 2
         self.enemy_bullet = enemy_bullet
         self.time_alive = pygame.time.get_ticks()
@@ -98,4 +99,11 @@ class Bullets(pygame.sprite.Sprite):
                 for player in hit_enemy_list:
                     player.kill()
                 self.kill()
+
+        hit_enemy_list = pygame.sprite.spritecollide(self, self.bullet_group, False, pygame.sprite.collide_rect_ratio(0.7))
+        if hit_enemy_list:
+            for bullet in hit_enemy_list:
+                if bullet is not self:
+                    bullet.kill()
+                    self.kill()
 

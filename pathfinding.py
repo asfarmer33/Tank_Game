@@ -20,7 +20,7 @@ def find_path(object_array, point_array, current_point, goal_point, last_point, 
             dist = get_distance(current_point, points[y][x])
             if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
                 if objects[y][x] == 0:
-                    closest_distance = -64
+                    closest_distance = -100
     if closest_distance == 0:
         closest_distance = 20
 

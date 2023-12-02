@@ -1,7 +1,7 @@
 import pygame
 from bullets import Bullets
 
-def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com):
+def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -10,15 +10,16 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                 if tanks.player == 1:
                     if event.key == pygame.K_SPACE:
                         if tanks.create_bullet():
-                            bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, 1, 1))
+                            bullet_count[0] += 1
+                            bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 1))
                 if tanks.player == 2:
                     if event.key == pygame.K_LSHIFT:
                         if tanks.create_bullet():
-                            bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group , 1, 2))
+                            bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 2))
 
     for enemy in enemy_group:
         if enemy.create_bullet():
-            bullet_group.add(Bullets(screen, enemy.x, enemy.y, enemy.angle, enemy_group, object_group, player_group, 0, 3))
+            bullet_group.add(Bullets(screen, enemy.x, enemy.y, enemy.angle, enemy_group, object_group, player_group, bullet_group, 0, 3))
 
     screen.blit(background, (0, 0))
 
@@ -35,16 +36,24 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
     if level[0] < 50:
         if len(enemy_group) <= 0 or len(player_group) <= 0:
             if len(enemy_group) <= 0:
+                if level[0] < 5:
+                    if bullet_count[0] == 1:
+                        if level[0] - 1 not in medals:
+                            medals.append(level[0] - 1)
+                else:
+                    if bullet_count[0] <= 2:
+                        if level[0] - 1 not in medals:
+                            medals.append(level[0] - 1)
                 if level[0] - 1 > lev_com[0]:
                     lev_com[0] = level[0] - 1
-            level[0] = 0
+            level[0] = 1
             pygame.sprite.Group.empty(enemy_group)
             pygame.sprite.Group.empty(player_group)
             pygame.sprite.Group.empty(bullet_group)
             pygame.sprite.Group.empty(object_group)
     else:
         if len(player_group) <= 1:
-            level[0] = 0
+            level[0] = 51
             pygame.sprite.Group.empty(player_group)
             pygame.sprite.Group.empty(bullet_group)
             pygame.sprite.Group.empty(object_group)
