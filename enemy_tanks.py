@@ -73,13 +73,22 @@ class enemy_tank(pygame.sprite.Sprite):
             else:
                 self.turn_path()
 
+        if self.level < 12:
+            if pygame.time.get_ticks() - self.time_shot > self.shoot_speed and self.face_player: # every 3 seconds the enemy tank can shoot
+                if abs(self.angle - self.player_angle()) < 5 or abs(self.angle - self.player_angle()) > 355:
+                    self.show_fire = 1
+                    self.make_bullet = 1 # creates bullet that can hit the player
+                    self.time_shot = pygame.time.get_ticks()
+            if pygame.time.get_ticks() - self.time_shot > self.shoot_speed: # every 3 seconds the enemy tank can shoot
+                self.show_fire = 1
+        else:
+            if pygame.time.get_ticks() - self.time_shot > self.shoot_speed: # every 3 seconds the enemy tank can shoot
+                self.show_fire = 1
+                self.make_bullet = 1 # creates bullet that can hit the player
+                self.time_shot = pygame.time.get_ticks()
+            if pygame.time.get_ticks() - self.time_shot > self.shoot_speed: # every 3 seconds the enemy tank can shoot
+                self.show_fire = 1
 
-        if pygame.time.get_ticks() - self.time_shot > self.shoot_speed and self.face_player: # every 3 seconds the enemy tank can shoot
-            self.show_fire = 1
-            self.make_bullet = 1 # creates bullet that can hit the player
-            self.time_shot = pygame.time.get_ticks()
-        if pygame.time.get_ticks() - self.time_shot > self.shoot_speed: # every 3 seconds the enemy tank can shoot
-            self.show_fire = 1
 
     def create_bullet(self):
         if self.make_bullet == 1:

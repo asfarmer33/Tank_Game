@@ -105,7 +105,7 @@ def path(player, enemy, level, last_player_pos, last_path):
         return last_path[1:]
 
     all_paths = []
-    depth = 15
+    depth = 10
     for x in range(depth): # caclulate 10 total paths and then find the shortest (can change the depth)
         final_path = find_path(objects, points, enemy_coord, player_coord, 0, 0, [])
         all_paths.append(final_path)

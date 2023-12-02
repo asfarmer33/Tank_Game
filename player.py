@@ -6,6 +6,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, screen, image, pos, object_group, player):
         super().__init__()
         self.screen = screen
+        self.image_player = image
         self.reg_image = pygame.image.load(image)
         self.reg_image = pygame.transform.scale(self.reg_image, (40, 40))
         if image == "images/tank_blue.png":

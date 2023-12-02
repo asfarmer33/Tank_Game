@@ -2,9 +2,18 @@ import pygame
 from bullets import Bullets
 
 def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count):
+    quit_game = 0
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                level[0] = 0
+                pygame.sprite.Group.empty(enemy_group)
+                pygame.sprite.Group.empty(player_group)
+                pygame.sprite.Group.empty(bullet_group)
+                pygame.sprite.Group.empty(object_group)
+                quit_game = 1
         if event.type == pygame.KEYDOWN:
             for tanks in player_group:
                 if tanks.player == 1:
@@ -33,30 +42,40 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
     [enemy.draw() for enemy in enemy_group]
     [player.draw() for player in player_group]
 
-    if level[0] < 50:
-        if len(enemy_group) <= 0 or len(player_group) <= 0:
-            if len(enemy_group) <= 0:
-                if level[0] < 5:
-                    if bullet_count[0] == 1:
-                        if level[0] - 1 not in medals:
-                            medals.append(level[0] - 1)
+    if quit_game == 0:
+        if level[0] < 50:
+            if len(enemy_group) <= 0 or len(player_group) <= 0:
+                if len(enemy_group) <= 0:
+                    if level[0] < 5:
+                        if bullet_count[0] == 1:
+                            if level[0] - 1 not in medals:
+                                medals.append(level[0] - 1)
+                    else:
+                        if bullet_count[0] <= 2:
+                            if level[0] - 1 not in medals:
+                                medals.append(level[0] - 1)
+                    if level[0] - 1 > lev_com[0]:
+                        lev_com[0] = level[0] - 1
+                    display_win_screen(screen, "You win")
                 else:
-                    if bullet_count[0] <= 2:
-                        if level[0] - 1 not in medals:
-                            medals.append(level[0] - 1)
-                if level[0] - 1 > lev_com[0]:
-                    lev_com[0] = level[0] - 1
-            level[0] = 1
-            pygame.sprite.Group.empty(enemy_group)
-            pygame.sprite.Group.empty(player_group)
-            pygame.sprite.Group.empty(bullet_group)
-            pygame.sprite.Group.empty(object_group)
-    else:
-        if len(player_group) <= 1:
-            level[0] = 51
-            pygame.sprite.Group.empty(player_group)
-            pygame.sprite.Group.empty(bullet_group)
-            pygame.sprite.Group.empty(object_group)
+                    display_win_screen(screen, "You lose")
+
+                level[0] = 1
+                pygame.sprite.Group.empty(enemy_group)
+                pygame.sprite.Group.empty(player_group)
+                pygame.sprite.Group.empty(bullet_group)
+                pygame.sprite.Group.empty(object_group)
+        else:
+            if len(player_group) <= 1:
+                for tank in player_group:
+                    if tank.image_player == "images/tank_blue.png":
+                        display_win_screen(screen, "Blue Wins")
+                    else:
+                        display_win_screen(screen, "Green Wins")
+                level[0] = 51
+                pygame.sprite.Group.empty(player_group)
+                pygame.sprite.Group.empty(bullet_group)
+                pygame.sprite.Group.empty(object_group)
 
 
     pygame.display.flip()
@@ -90,7 +109,7 @@ def run_start_menu(screen, background, FPS, level):
     pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
     FPS.tick(60)
 
-def run_one_player_level_menu(screen, background, FPS, level, lev_com):
+def run_one_player_level_menu(screen, background, FPS, level, lev_com, medals):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -150,6 +169,9 @@ def run_one_player_level_menu(screen, background, FPS, level, lev_com):
                         sound = pygame.mixer.Sound("sounds/click.wav")
                         sound.play()
                         level[0] = 11
+            if mouse_x > 425 and mouse_x < 500 and mouse_y > (100 + 75 * 3) and mouse_y < (175 + 75 * 3):
+                if lev_com[0] > 9 and len(medals) >= 10:
+                    level[0] = 12
 
 
     screen.blit(background, (0, 0))
@@ -216,5 +238,17 @@ def run_two_player_level_menu(screen, background, FPS, level):
     pygame.display.flip()
     pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
     FPS.tick(60)
+
+def display_win_screen(screen, winner):
+    n = 0
+    while n < 1000:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+        n += 1
+        my_font_bigger = pygame.font.SysFont('fonts/kenvector_future.ttf', 80)
+        text = my_font_bigger.render(winner, True, (0, 0, 0))
+        screen.blit(text, (300, 300))
+        pygame.display.flip()
 
 
