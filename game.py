@@ -40,16 +40,19 @@ def run_start_menu(screen, background, FPS, level):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-
-    if pygame.mouse.get_pressed()[0]:
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        if mouse_x > (screen.get_width() / 2 - 190/2) and mouse_x < (screen.get_width() / 2 + 190/2):
-            if mouse_y < (screen.get_height() / 2 + 49) and mouse_y > (screen.get_height() / 2):
-                print("test")
-                level[0] = 1
-        if mouse_x > (screen.get_width() / 2 - 190/2) and mouse_x < (screen.get_width() / 2 + 190/2):
-            if mouse_y < (screen.get_height() / 2 + 49*3) and mouse_y > (screen.get_height() / 2 + 49*2):
-                print("test2")
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            if mouse_x > (screen.get_width() / 2 - 190/2) and mouse_x < (screen.get_width() / 2 + 190/2):
+                if mouse_y < (screen.get_height() / 2 + 49) and mouse_y > (screen.get_height() / 2):
+                    print("test")
+                    sound = pygame.mixer.Sound("sounds/click.wav")
+                    sound.play()
+                    level[0] = 1
+            if mouse_x > (screen.get_width() / 2 - 190/2) and mouse_x < (screen.get_width() / 2 + 190/2):
+                if mouse_y < (screen.get_height() / 2 + 49*3) and mouse_y > (screen.get_height() / 2 + 49*2):
+                    print("test2")
+                    sound = pygame.mixer.Sound("sounds/click.wav")
+                    sound.play()
 
 
     screen.blit(background, (0, 0))
