@@ -2,6 +2,7 @@ import pygame
 from bullets import Bullets
 import math
 from pathfinding import path
+from check_shoot import check_shoot
 
 class enemy_tank(pygame.sprite.Sprite):
 
@@ -27,8 +28,11 @@ class enemy_tank(pygame.sprite.Sprite):
         self.time_calc = 0
         self.calc_angle = 0
         self.path = []
-        self.old_path = []
         self.last_player_pos = (0, 0)
+        self.check_shoot_obj = 0
+        self.check_shoot_time = 0
+        self.face_player = 0
+        self.get_new_path = 1
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
@@ -46,7 +50,9 @@ class enemy_tank(pygame.sprite.Sprite):
 
     def update(self):
         self.turn_path_bearing()
-        if self.get_sprite_distance(self, self.player_tank) < 500 and len(self.path) < 4:
+        self.check_shoot()
+        self.check_distance_to_point()
+        if self.get_sprite_distance(self, self.player_tank) < 500 and len(self.path) < 4 or self.face_player:
             self.turn()
         else:
             if abs(self.angle - self.calc_angle) < 3 or abs(self.angle - self.calc_angle) > 357:
@@ -91,19 +97,18 @@ class enemy_tank(pygame.sprite.Sprite):
 
 
     def turn_path_bearing(self):
-        if pygame.time.get_ticks() - self.time_calc > 1000 or self.time_calc == 0:
-            move_path = path(self.player_tank.rect.center, self.rect.center, 1, self.last_player_pos, self.old_path)
+        if pygame.time.get_ticks() - self.time_calc > 1000 and self.get_new_path == 1 or self.time_calc == 0:
+            move_path = path(self.player_tank.rect.center, self.rect.center, 1, self.last_player_pos, self.path)
             self.last_player_pos = self.player_tank.rect.center
-            self.old_path = move_path[:]
+            self.path = move_path[:]
             try:
-                if len(self.old_path) > 1:
-                    next_x = self.old_path[0][0] + 32
-                    next_y = self.old_path[0][1] + 32
+                if len(self.path) > 0:
+                    next_x = self.path[0][0] + 32
+                    next_y = self.path[0][1] + 32
                     rel_x = next_x - self.x
                     rel_y = next_y - self.y
                     self.time_calc = pygame.time.get_ticks()
                     self.calc_angle = -math.atan2(rel_y, rel_x) * 180 / math.pi + 90
-                    self.path = self.old_path[:]
             except:
                 print(move_path)
 
@@ -123,7 +128,6 @@ class enemy_tank(pygame.sprite.Sprite):
 
 
     def turn(self):
-        original_rect = self.rect
         angle_diff = (self.player_angle() - self.angle + 180) % 360 - 180 # find the angle to face the player
         if angle_diff >= 0: # find if it needs to turn left or right
             direction = 1
@@ -144,7 +148,25 @@ class enemy_tank(pygame.sprite.Sprite):
 
 
     def check_shoot(self):
-        return 0
+        if (pygame.time.get_ticks() - self.check_shoot_time) > 500 or self.check_shoot_time == 0:
+            self.check_shoot_obj = check_shoot(self.screen, self.rect.center, self.player_tank, self.object_group)
+            self.check_shoot_time = pygame.time.get_ticks()
+        self.check_shoot_obj.update()
+        if self.check_shoot_obj.check_for_hit == 1:
+            if self.check_shoot_obj.check_hit() == 1:
+                self.face_player = 1
+        else:
+            self.face_player = 0
+
+    def check_distance_to_point(self):
+        try:
+            print(self.get_distance((self.path[0][0] + 32, self.path[0][1] + 32), (self.x, self.y)))
+            if self.get_distance((self.path[0][0] + 32, self.path[0][1] + 32), (self.x, self.y)) < 10:
+                self.get_new_path = 1
+            else:
+                self.get_new_path = 0
+        except:
+            print("error check distance to point")
 
 
 

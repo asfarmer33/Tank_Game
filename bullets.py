@@ -55,12 +55,13 @@ class Bullets(pygame.sprite.Sprite):
 
 
             for object in self.object_group: # checking all objects on the screen
+                hit_factor = 0.95
                 if self.rect.colliderect(object): # checking if the bullet collided with the object
-                    if self.rect.centerx > object.rect.centerx + object.get_width()/2 * 0.98 or self.rect.centerx < object.rect.centerx - object.get_width()/2 * 0.98: # checking to see if it hit the left or right of the box
+                    if self.rect.centerx > object.rect.centerx + object.get_width()/2 * hit_factor or self.rect.centerx < object.rect.centerx - object.get_width()/2 * hit_factor: # checking to see if it hit the left or right of the box
                         self.angle *= -1
                         self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
                         self.bounce += 1
-                    elif self.rect.centery > object.rect.centery + object.get_height()/2 * 0.98 or self.rect.centery < object.rect.centery - object.get_height()/2 * 0.98: # else it hit the top of the box
+                    elif self.rect.centery > object.rect.centery + object.get_height()/2 * hit_factor or self.rect.centery < object.rect.centery - object.get_height()/2 * hit_factor: # else it hit the top of the box
                         self.angle = self.angle * -1 + 180  # swaps angle and then flips it
                         self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
                         self.bounce += 1

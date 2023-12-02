@@ -102,7 +102,7 @@ def path(player, enemy, level, last_player_pos, last_path):
 
     #print(f"Enemy: {enemy_coord}, Player: {player_coord}")
 
-    if last_x_array == player_x_array and last_y_array == player_y_array: # if the player is in the same square just return the same path, but one shroter
+    if last_x_array == player_x_array and last_y_array == player_y_array and len(last_path) > 1: # if the player is in the same square just return the same path, but one shroter
         return last_path[1:]
 
     all_paths = []
@@ -115,8 +115,9 @@ def path(player, enemy, level, last_player_pos, last_path):
             if len(options) <= len(shortest_path):
                 shortest_path = options[:]
     except:
-        shortest_path = []
+        shortest_path = [player_coord]
 
+    print(f"This is the shortest path: {shortest_path}")
     return shortest_path
 
 

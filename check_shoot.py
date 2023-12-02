@@ -6,7 +6,11 @@ class check_shoot(pygame.sprite.Sprite):
     def __init__(self, screen, pos, player_tank, object_group):
         super().__init__()
         self.screen = screen
+        self.pos = pos
         self.x, self.y = pos
+        self.player = pygame.sprite.Group()
+        self.image = pygame.image.load("images/green_bullet.png")
+        self.player.add(player_tank)
         self.playerx = player_tank.x
         self.playery = player_tank.y
         self.rect = pygame.Rect(pos, (10, 10))
@@ -14,10 +18,14 @@ class check_shoot(pygame.sprite.Sprite):
         self.angle = self.player_angle()
         self.object_group = object_group
         self.face_player = 0
+        self.check_for_hit = 1
+
+    def draw(self):
+        self.screen.blit(self.image, self.rect)
 
     def update(self):
-        self.x += 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
-        self.y += 1 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
+        self.x += 40 * math.cos(math.pi / 2 - self.angle * math.pi / 180)
+        self.y += 40 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
 
         self.rect.centerx = self.x
         self.rect.centery = self.y
@@ -43,9 +51,10 @@ class check_shoot(pygame.sprite.Sprite):
         return self.get_distance(coord1, coord2)
 
     def check_hit(self):
-        collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.9))
+        collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.98))
         if collided:
-            return 1
+            self.check_for_hit = 0
+            return 0
         else:
             collided = pygame.sprite.spritecollide(self, self.player, False, pygame.sprite.collide_rect_ratio(0.9))
         if collided:
