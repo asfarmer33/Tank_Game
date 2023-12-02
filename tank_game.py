@@ -34,7 +34,7 @@ while running:
     elif level[0] == 1:
         background = one_player_background(screen, lev_com)
         while level[0] == 1:
-            run_one_player_level_menu(screen, background, FPS, level)
+            run_one_player_level_menu(screen, background, FPS, level, lev_com)
     elif level[0] > 1 and level[0] < 50:
         background = make_background(screen, level[0])
 

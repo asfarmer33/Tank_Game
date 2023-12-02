@@ -33,11 +33,19 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
     if level[0] < 50:
         if len(enemy_group) <= 0 or len(player_group) <= 0:
             if len(enemy_group) <= 0:
-                lev_com[0] += 1
+                if level[0] - 1 > lev_com[0]:
+                    lev_com[0] = level[0] - 1
             level[0] = 0
+            pygame.sprite.Group.empty(enemy_group)
+            pygame.sprite.Group.empty(player_group)
+            pygame.sprite.Group.empty(bullet_group)
+            pygame.sprite.Group.empty(object_group)
     else:
         if len(player_group) <= 1:
             level[0] = 0
+            pygame.sprite.Group.empty(player_group)
+            pygame.sprite.Group.empty(bullet_group)
+            pygame.sprite.Group.empty(object_group)
 
 
     pygame.display.flip()
@@ -71,10 +79,64 @@ def run_start_menu(screen, background, FPS, level):
     pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
     FPS.tick(60)
 
-def run_one_player_level_menu(screen, background, FPS, level):
+def run_one_player_level_menu(screen, background, FPS, level, lev_com):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            if mouse_x > 70 and mouse_x < 370:
+                if mouse_y > 100 and mouse_y < 175:
+                    sound = pygame.mixer.Sound("sounds/click.wav")
+                    sound.play()
+                    level[0] = 2
+                if mouse_y > (100 + 75 * 1.5) and mouse_y < (100 + 75 * 1.5 + 75):
+                    if lev_com[0] > 0:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        level[0] = 3
+                if mouse_y > (100 + 75 * 3) and mouse_y < (100 + 75 * 3 + 75):
+                    if lev_com[0] > 1:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        level[0] = 4
+                if mouse_y > (100 + 75 * 4.5) and mouse_y < (100 + 75 * 4.5 + 75):
+                    if lev_com[0] > 2:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        level[0] = 5
+                if mouse_y > (100 + 75 * 6) and mouse_y < (100 + 75 * 6 + 75):
+                    if lev_com[0] > 3:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        level[0] = 6
+            if mouse_x > 526 and mouse_x < 826:
+                if mouse_y > 100 and mouse_y < 175:
+                    if lev_com[0] > 4:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        level[0] = 7
+                if mouse_y > (100 + 75 * 1.5) and mouse_y < (100 + 75 * 1.5 + 75):
+                    if lev_com[0] > 5:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        level[0] = 8
+                if mouse_y > (100 + 75 * 3) and mouse_y < (100 + 75 * 3 + 75):
+                    if lev_com[0] > 6:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        level[0] = 9
+                if mouse_y > (100 + 75 * 4.5) and mouse_y < (100 + 75 * 4.5 + 75):
+                    if lev_com[0] > 7:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        level[0] = 10
+                if mouse_y > (100 + 75 * 6) and mouse_y < (100 + 75 * 6 + 75):
+                    if lev_com[0] > 8:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        level[0] = 11
+
 
     screen.blit(background, (0, 0))
 

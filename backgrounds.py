@@ -100,10 +100,13 @@ def one_player_background(screen, lev_com):
     yb = "images/yellow_button00.png"
     rb = "images/red_button00.png"
 
-    my_font_reg = pygame.font.SysFont('fonts/kenvector_future.ttf', 75)
+    my_font_reg = pygame.font.SysFont('fonts/kenvector_future.ttf', 65)
+    my_font_bigger = pygame.font.SysFont('fonts/kenvector_future.ttf', 80)
 
-    lev1_img = pygame.image.load(yb)
-    lev1_img = pygame.transform.scale(lev1_img, (300, 75))
+
+    # load text
+    top_text = my_font_bigger.render("One Player Level Select", True, (255, 255, 255))
+    top_text_back = my_font_bigger.render("One Player Level Select", True, (0, 0, 0))
 
     lev1_text = my_font_reg.render('Level One', True, (255, 255, 255))
     lev1_text_back = my_font_reg.render('Level One', True, (100, 100, 100))
@@ -134,6 +137,10 @@ def one_player_background(screen, lev_com):
 
     lev10_text = my_font_reg.render('Level Ten', True, (255, 255, 255))
     lev10_text_back = my_font_reg.render('Level Ten', True, (100, 100, 100))
+
+    # load images
+    lev1_img = pygame.image.load(yb)
+    lev1_img = pygame.transform.scale(lev1_img, (300, 75))
 
     if lev_com[0] > 0:
         lev2_img = pygame.image.load(yb)
@@ -190,21 +197,47 @@ def one_player_background(screen, lev_com):
     lev10_img = pygame.transform.scale(lev10_img, (300, 75))
 
     background.blit(lev1_img, (70, 100))
-    background.blit(lev1_text_back, (97, 110 + 2))
-    background.blit(lev1_text, (95, 110))
+    background.blit(lev1_text_back, (112, 117))
+    background.blit(lev1_text, (110, 115))
 
     background.blit(lev2_img, (70, 100 + 75 * 1.5))
-    background.blit(lev2_text_back, (97, 100 + 75 * 1.5 + 12))
-    background.blit(lev2_text, (97, 100 + 75 * 1.5 + 10))
+    background.blit(lev2_text_back, (112, 115 + 75 * 1.5 + 2))
+    background.blit(lev2_text, (110, 115 + 75 * 1.5))
 
     background.blit(lev3_img, (70, 100 + 75 * 3))
+    background.blit(lev3_text_back, (92, 115 + 75 * 3 + 2))
+    background.blit(lev3_text, (90, 115 + 75 * 3))
+
     background.blit(lev4_img, (70, 100 + 75 * 4.5))
+    background.blit(lev4_text_back, (102, 115 + 75 * 4.5 + 2))
+    background.blit(lev4_text, (100, 115 + 75 * 4.5))
+
     background.blit(lev5_img, (70, 100 + 75 * 6))
+    background.blit(lev5_text_back, (102, 115 + 75 * 6 + 2))
+    background.blit(lev5_text, (100, 115 + 75 * 6))
+
     background.blit(lev6_img, (526, 100))
+    background.blit(lev6_text_back, (568, 117))
+    background.blit(lev6_text, (566, 115))
+
     background.blit(lev7_img, (526, 100 + 75 * 1.5))
+    background.blit(lev7_text_back, (548, 115 + 75 * 1.5 + 2))
+    background.blit(lev7_text, (546, 115 + 75 * 1.5))
+
     background.blit(lev8_img, (526, 100 + 75 * 3))
+    background.blit(lev8_text_back, (548, 115 + 75 * 3 + 2))
+    background.blit(lev8_text, (546, 115 + 75 * 3))
+
     background.blit(lev9_img, (526, 100 + 75 * 4.5))
+    background.blit(lev9_text_back, (558, 115 + 75 * 4.5 + 2))
+    background.blit(lev9_text, (556, 115 + 75 * 4.5))
+
     background.blit(lev10_img, (526, 100 + 75 * 6))
+    background.blit(lev10_text_back, (568, 115 + 75 * 6 + 2))
+    background.blit(lev10_text, (566, 115 + 75 * 6))
+
+    background.blit(top_text_back, (127, 22))
+    background.blit(top_text, (125, 20))
 
     return background
 
