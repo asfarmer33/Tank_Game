@@ -32,7 +32,6 @@ def find_path(object_array, point_array, current_point, goal_point, last_point, 
                 if objects[y][x] == 1: # only add it if there is not an object there
                     if points[y][x] not in path: # if the points is not already recorded
                         if points[y][x] == goal_point: # if the point is the goal point return it
-                            print("goal found")
                             return goal_point
                         else:
                             if points[y][x] != last_point: # makes sure it is not the same as the last point so it does not go back and forth

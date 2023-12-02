@@ -50,13 +50,14 @@ class enemy_tank(pygame.sprite.Sprite):
             print("error")
 
     def update(self):
+        print(self.face_player)
         self.turn_path_bearing()
         self.check_shoot()
         self.check_distance_to_point()
-        if self.get_sprite_distance(self, self.player_tank) < 500 and len(self.path) < 4 or self.face_player:
+        if self.face_player:
             self.turn()
         else:
-            if abs(self.angle - self.calc_angle) < 3 or abs(self.angle - self.calc_angle) > 357:
+            if abs(self.angle - self.calc_angle)%360 < 3 or abs(self.angle - self.calc_angle)%360 > 357:
                 self.move()
             else:
                 self.turn_path()
