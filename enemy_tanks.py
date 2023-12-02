@@ -6,9 +6,10 @@ from check_shoot import check_shoot
 
 class enemy_tank(pygame.sprite.Sprite):
 
-    def __init__(self, screen, pos, player_tank, object_group):
+    def __init__(self, screen, pos, player_tank, object_group, level):
         super().__init__()
         self.screen = screen
+        self.level = level
         self.x, self.y = pos
         self.reg_image = pygame.image.load('images/tank_sand.png')
         self.reg_image = pygame.transform.scale(self.reg_image, (40, 40))
@@ -97,8 +98,8 @@ class enemy_tank(pygame.sprite.Sprite):
 
 
     def turn_path_bearing(self):
-        if pygame.time.get_ticks() - self.time_calc > 1000 and self.get_new_path == 1 or self.time_calc == 0:
-            move_path = path(self.player_tank.rect.center, self.rect.center, 1, self.last_player_pos, self.path)
+        if pygame.time.get_ticks() - self.time_calc > 1000 and self.get_new_path or self.time_calc == 0:
+            move_path = path(self.player_tank.rect.center, self.rect.center, self.level, self.last_player_pos, self.path)
             self.last_player_pos = self.player_tank.rect.center
             self.path = move_path[:]
             try:
@@ -160,7 +161,6 @@ class enemy_tank(pygame.sprite.Sprite):
 
     def check_distance_to_point(self):
         try:
-            print(self.get_distance((self.path[0][0] + 32, self.path[0][1] + 32), (self.x, self.y)))
             if self.get_distance((self.path[0][0] + 32, self.path[0][1] + 32), (self.x, self.y)) < 10:
                 self.get_new_path = 1
             else:

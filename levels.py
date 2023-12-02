@@ -2,14 +2,14 @@ import pygame
 
 
 def get_object_level(level):
-    objects = {"test":
+    objects = {"99":
         [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1],
             [1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
             [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1],
-            [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -37,7 +37,7 @@ def get_object_level(level):
 
 
 def get_background_level(level):
-    backgrounds = {"test":
+    backgrounds = {"99":
         [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -70,11 +70,11 @@ def get_background_level(level):
     return backgrounds[str(level)]
 
 def get_enemy_pos(level):
-    tank_pos = {"test": [400, 400], "1": [700, 500]}
+    tank_pos = {"99": [400, 600], "1": [700, 500]}
 
     return tank_pos[str(level)]
 
 def get_player_pos(level):
-    player_pos = {"test": [100, 100], "1": [100, 100]}
+    player_pos = {"99": [100, 100], "1": [100, 100]}
 
     return player_pos[str(level)]

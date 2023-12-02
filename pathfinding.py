@@ -20,11 +20,11 @@ def find_path(object_array, point_array, current_point, goal_point, last_point, 
             dist = get_distance(current_point, points[y][x])
             if dist < 65 and dist > 0: # if the position is within 64 pixels of another position add
                 if objects[y][x] == 0:
-                    closest_distance = -50
+                    closest_distance = -64
     if closest_distance == 0:
         closest_distance = 20
 
-
+    error = 0
     for y in range(0, 10): # go through all the position in the array
         for x in range(0, 14):
             dist = get_distance(current_point, points[y][x])
@@ -32,16 +32,16 @@ def find_path(object_array, point_array, current_point, goal_point, last_point, 
                 if objects[y][x] == 1: # only add it if there is not an object there
                     if points[y][x] not in path: # if the points is not already recorded
                         if points[y][x] == goal_point: # if the point is the goal point return it
+                            print("goal found")
                             return goal_point
                         else:
                             if points[y][x] != last_point: # makes sure it is not the same as the last point so it does not go back and forth
                                 if abs(get_distance(current_point, goal_point)) - abs(get_distance(points[y][x], goal_point)) > closest_distance: # if it is moving away don't let it
                                     path_length += get_distance(current_point, points[y][x])
-                                    if path_length < 2000: # if the overall path length is too long do not use it
+                                    if path_length < 10000: # if the overall path length is too long do not use it
                                         if points[y][x] not in all_paths: # if the point is already in the path do not add it
                                             new_path.append(points[y][x])
                                             all_paths.append(points[y][x])
-
 
 
     for items in new_path: # copy the path over if it is not already in the recorded paths
@@ -106,7 +106,8 @@ def path(player, enemy, level, last_player_pos, last_path):
         return last_path[1:]
 
     all_paths = []
-    for x in range(10): # caclulate 10 total paths and then find the shortest (can change the depth)
+    depth = 15
+    for x in range(depth): # caclulate 10 total paths and then find the shortest (can change the depth)
         final_path = find_path(objects, points, enemy_coord, player_coord, 0, 0, [])
         all_paths.append(final_path)
     try: # sometimes it has trouble finding, so just do not run it and return a blank path
@@ -114,7 +115,9 @@ def path(player, enemy, level, last_player_pos, last_path):
         for options in all_paths:
             if len(options) <= len(shortest_path):
                 shortest_path = options[:]
-    except:
+    except Exception as e:
+        print("error shortest path")
+        print(e)
         shortest_path = [player_coord]
 
     print(f"This is the shortest path: {shortest_path}")
@@ -127,10 +130,19 @@ def get_distance(coord1, coord2):
     x2, y2 = coord2
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
+def check_distance_to_point(path, en_x, en_y):
+    try:
+        if get_distance((path[0][0] + 32, path[0][1] + 32), (en_x, en_y)) < 10:
+            return 1
+        else:
+            return 0
+    except:
+        print("error check distance to point")
+
 player = pygame.Rect(64, 64, 20,20) # for testing
 enemy = pygame.Rect(256, 448, 20, 20)
 
-print(path(player.center, enemy.center, "test", (0,0), (0,0)))
+print(path(player.center, enemy.center, 99, (0,0), (0,0)))
 
 
 

@@ -15,7 +15,7 @@ WIDTH = 896
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-level = 1
+level = 99
 
 print(screen.get_width())
 
@@ -35,7 +35,7 @@ player_tank = Player(screen, "images/tank_blue.png", get_player_pos(level), obje
 player_group.add(player_tank)
 #player_group.add(player2_tank)
 
-enemy_group.add(enemy_tank(screen, get_enemy_pos(level), player_tank, object_group))
+enemy_group.add(enemy_tank(screen, get_enemy_pos(level), player_tank, object_group, level))
 
 
 
