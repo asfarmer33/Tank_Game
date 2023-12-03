@@ -62,11 +62,11 @@ while running:
 
         enemy_group.add(enemy_tank(screen, get_enemy_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
         if level[0] != 12: # if not level 11 add a stationary enemy
-            enemy_group.add(st_enemy_tank(screen, get_stenemy_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
+            enemy_group.add(st_enemy_tank(screen, get_stenemy_pos(level[0]), player_tank, object_group, level[0], get_stenemy_dif(level[0])))
         if level[0] > 4 and level[0] != 12: # levels 1-3 have only one stationary enemy
-            enemy_group.add(st_enemy_tank(screen, get_stenemy2_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
+            enemy_group.add(st_enemy_tank(screen, get_stenemy2_pos(level[0]), player_tank, object_group, level[0], get_stenemy_dif(level[0])))
         if level[0] > 8 and level[0] != 12: # levels 4-7 have two stationary enemies and 8-10 have three
-            enemy_group.add(st_enemy_tank(screen, get_stenemy3_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
+            enemy_group.add(st_enemy_tank(screen, get_stenemy3_pos(level[0]), player_tank, object_group, level[0], get_stenemy_dif(level[0])))
         if level[0] > 6: # 1-5 only have one moving enemy while 6-10 have two
             enemy_group.add(enemy_tank(screen, get_enemy2_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
         while level[0] > 1:
