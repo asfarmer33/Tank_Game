@@ -288,7 +288,7 @@ def one_player_background(screen, lev_com, medals):
 
     return background
 
-def two_player_background(screen):
+def two_player_background(screen, medals):
     WIDTH = screen.get_width()
     HEIGHT = screen.get_height()
     background = pygame.Surface((WIDTH, HEIGHT))
@@ -334,6 +334,9 @@ def two_player_background(screen):
     lev10_text = my_font_reg.render('Level Ten', True, (255, 255, 255))
     lev10_text_back = my_font_reg.render('Level Ten', True, (100, 100, 100))
 
+    lev11_text = my_font_reg.render('11', True, (255, 255, 255))
+    lev11_text_back = my_font_reg.render('11', True, (100, 100, 100))
+
     # load images
     lev1_img = pygame.image.load(yb)
     lev1_img = pygame.transform.scale(lev1_img, (300, 75))
@@ -364,6 +367,9 @@ def two_player_background(screen):
 
     lev10_img = pygame.image.load(yb)
     lev10_img = pygame.transform.scale(lev10_img, (300, 75))
+
+    lev11_img = pygame.image.load(yb)
+    lev11_img = pygame.transform.scale(lev11_img, (75, 75))
 
     background.blit(lev1_img, (70, 100))
     background.blit(lev1_text_back, (112, 117))
@@ -405,8 +411,14 @@ def two_player_background(screen):
     background.blit(lev10_text_back, (568, 115 + 75 * 6 + 2))
     background.blit(lev10_text, (566, 115 + 75 * 6))
 
+    if len(medals[0]) >= 11:
+        background.blit(lev11_img, (425, 100 + 75 * 3))
+        background.blit(lev11_text_back, (440, 117 + 75 * 3))
+        background.blit(lev11_text, (438, 115 + 75 * 3))
+
     background.blit(top_text_back, (127, 22))
     background.blit(top_text, (125, 20))
+
 
     return background
 
@@ -589,3 +601,5 @@ def get_tile(tile_num):
         return pygame.image.load('images/roads/tileSand_roadSplitS.png')
     if tile_num == 21:
         return pygame.image.load('images/roads/tileSand_roadSplitW.png')
+    if tile_num == 22:
+        return pygame.image.load('images/roads/tileSand_roadCornerLL.png')

@@ -33,14 +33,14 @@ class Music():
                 self.song.set_volume(0.3)
                 self.song.play()
                 self.song_time = pygame.time.get_ticks()
-        if self.level > 51 and self.level < 99:
+        if self.level > 51 and self.level < 62:
             if self.song_time == 0 or pygame.time.get_ticks() - self.song_time > 60000:
                 self.song.fadeout(500)
                 self.song = pygame.mixer.Sound("sounds/background_music.wav")
                 self.song.set_volume(0.3)
                 self.song.play()
                 self.song_time = pygame.time.get_ticks()
-        if self.level == 12:
+        if self.level == 12 or self.level == 62:
             if self.song_time == 0 or pygame.time.get_ticks() - self.song_time > 126000:
                 self.song.fadeout(500)
                 self.song = pygame.mixer.Sound("sounds/11_music.wav")

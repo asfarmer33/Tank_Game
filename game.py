@@ -230,7 +230,7 @@ def run_one_player_level_menu(screen, background, FPS, level, lev_com, medals, m
     pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
     FPS.tick(60)
 
-def run_two_player_level_menu(screen, background, FPS, level, music):
+def run_two_player_level_menu(screen, background, FPS, level, medals, music):
     music.update(level[0])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -282,6 +282,10 @@ def run_two_player_level_menu(screen, background, FPS, level, music):
                     sound = pygame.mixer.Sound("sounds/click.wav")
                     sound.play()
                     level[0] = 61
+            if mouse_x > 425 and mouse_x < 500 and mouse_y > (100 + 75 * 3) and mouse_y < (175 + 75 * 3):
+                if len(medals[0]) >= 11:
+                    level[0] = 62
+
 
 
     screen.blit(background, (0, 0))

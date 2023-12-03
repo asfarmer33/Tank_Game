@@ -26,7 +26,7 @@ player_group = pygame.sprite.Group()
 
 level = [0]
 lev_com = [10]
-medals = [[]]
+medals = [[1,2,3,4,5,6,7,8,9,10,11]]
 with open('saves.txt', 'r') as f:
     contents = json.load(f)
 saves = [0]
@@ -72,9 +72,9 @@ while running:
         while level[0] > 1:
             run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music, enemies_killed)
     elif level[0] == 51:
-        background = two_player_background(screen)
+        background = two_player_background(screen, medals)
         while level[0] == 51:
-            run_two_player_level_menu(screen, background, FPS, level, music)
+            run_two_player_level_menu(screen, background, FPS, level, medals, music)
     elif level[0] > 51 and level[0] < 99:
         background = make_background(screen, level[0])
 
