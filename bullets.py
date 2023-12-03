@@ -31,7 +31,7 @@ class Bullets(pygame.sprite.Sprite):
 
         self.dis_exp_sound = pygame.mixer.Sound("sounds/dist_expl.mp3")
         self.exp_sound = pygame.mixer.Sound("sounds/expl.mp3")
-        self.exp_sound.set_volume(0.3)
+        self.exp_sound.set_volume(0.2)
         self.bounce_sound = pygame.mixer.Sound("sounds/bounce.mp3")
 
     def draw(self):

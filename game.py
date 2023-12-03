@@ -1,8 +1,12 @@
 import pygame
 from bullets import Bullets
 from music import Music
+from enemy_tanks import enemy_tank
+from levels import *
+import json
+from backgrounds import save_background
 
-def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music):
+def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music, enemies_killed):
     quit_game = 0
     music.update(level[0])
     for event in pygame.event.get():
@@ -24,19 +28,23 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                             bullet_count[0] += 1
                             bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 1))
                             shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
+                            shoot_sound.set_volume(0.3)
                             shoot_sound.play()
                 if tanks.player == 2:
                     if event.key == pygame.K_LSHIFT:
                         if tanks.create_bullet():
                             bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 2))
                             shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
+                            shoot_sound.set_volume(0.3)
                             shoot_sound.play()
 
     for enemy in enemy_group:
         if enemy.create_bullet():
             bullet_group.add(Bullets(screen, enemy.x, enemy.y, enemy.angle, enemy_group, object_group, player_group, bullet_group, 0, 3))
-            shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
-            shoot_sound.play()
+            if level[0] != 12:
+                shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
+                shoot_sound.set_volume(0.3)
+                shoot_sound.play()
 
     screen.blit(background, (0, 0))
 
@@ -50,18 +58,46 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
     [enemy.draw() for enemy in enemy_group]
     [player.draw() for player in player_group]
 
+    print(level[0])
     if quit_game == 0:
+        if level[0] == 12 and enemies_killed[0] < 10:
+            if len(enemy_group) < 2:
+                for tank in player_group:
+                    if tank.player == 1:
+                        enemies_killed[0] += 1
+                        enemy_group.add(enemy_tank(screen, get_enemy_pos(level[0]), tank, object_group, level[0], get_enemy_dif(level[0])))
         if level[0] < 50:
             if len(enemy_group) <= 0 or len(player_group) <= 0:
                 if len(enemy_group) <= 0:
+                    if level[0] == 12:
+                        if level[0] - 1 not in medals:
+                            medals.append(level[0] - 1)
+                            medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                            medal_sound.play()
                     if level[0] < 5:
-                        if bullet_count[0] == 1:
-                            if level[0] - 1 not in medals:
-                                medals.append(level[0] - 1)
-                    else:
                         if bullet_count[0] <= 2:
                             if level[0] - 1 not in medals:
                                 medals.append(level[0] - 1)
+                                medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                                medal_sound.play()
+                    elif level[0] < 7:
+                        if bullet_count[0] <= 3:
+                            if level[0] - 1 not in medals:
+                                medals.append(level[0] - 1)
+                                medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                                medal_sound.play()
+                    elif level[0] < 9:
+                        if bullet_count[0] <= 4:
+                            if level[0] - 1 not in medals:
+                                medals.append(level[0] - 1)
+                                medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                                medal_sound.play()
+                    else:
+                        if bullet_count[0] <= 5:
+                            if level[0] - 1 not in medals:
+                                medals.append(level[0] - 1)
+                                medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                                medal_sound.play()
                     if level[0] - 1 > lev_com[0]:
                         lev_com[0] = level[0] - 1
                     display_win_screen(screen, "You Win", music)
@@ -110,6 +146,11 @@ def run_start_menu(screen, background, FPS, level, music):
                     sound = pygame.mixer.Sound("sounds/click.wav")
                     sound.play()
                     level[0] = 51
+            if mouse_x > 10 and mouse_x < 210:
+                if mouse_y > 10 and mouse_y < 60:
+                    sound = pygame.mixer.Sound("sounds/click.wav")
+                    sound.play()
+                    level[0] = 100
 
 
     screen.blit(background, (0, 0))
@@ -250,14 +291,158 @@ def run_two_player_level_menu(screen, background, FPS, level, music):
     pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
     FPS.tick(60)
 
+def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
+    background = save_background(screen, saves)
+    music.update(level[0])
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                level[0] = 0
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            keys = pygame.key.get_pressed()
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            if keys[pygame.K_LCTRL]:
+                print("test")
+                if mouse_x > 520 and mouse_x < 820:
+                    if mouse_y > 100 and mouse_y < 175:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        print("test")
+                        sound.play()
+                        saves[0]['1'] = [0, []]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+                    if mouse_y > (100 + 75 * 1.5) and mouse_y < (100 + 75 * 1.5 + 75):
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        saves[0]['2'] = [0, []]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+                    if mouse_y > (100 + 75 * 3) and mouse_y < (100 + 75 * 3 + 75):
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        saves[0]['3'] = [0, []]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+                    if mouse_y > (100 + 75 * 4.5) and mouse_y < (100 + 75 * 4.5 + 75):
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        saves[0]['4'] = [0, []]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+                    if mouse_y > (100 + 75 * 6) and mouse_y < (100 + 75 * 6 + 75):
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        saves[0]['5'] = [0, []]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+
+            elif keys[pygame.K_LSHIFT]:
+                print("test2")
+                if mouse_x > 520 and mouse_x < 820:
+                    if mouse_y > 100 and mouse_y < 175:
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        with open('saves.txt', 'r') as f:
+                            contents = json.load(f)
+                        saves[0] = contents
+                        saves[0]['1'] = [lev_com[0], medals]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+                    if mouse_y > (100 + 75 * 1.5) and mouse_y < (100 + 75 * 1.5 + 75):
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        with open('saves.txt', 'r') as f:
+                            contents = json.load(f)
+                        saves[0] = contents
+                        saves[0]['2'] = [lev_com[0], medals]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+                    if mouse_y > (100 + 75 * 3) and mouse_y < (100 + 75 * 3 + 75):
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        with open('saves.txt', 'r') as f:
+                            contents = json.load(f)
+                        saves[0] = contents
+                        saves[0]['3'] = [lev_com[0], medals]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+                    if mouse_y > (100 + 75 * 4.5) and mouse_y < (100 + 75 * 4.5 + 75):
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        with open('saves.txt', 'r') as f:
+                            contents = json.load(f)
+                        saves[0] = contents
+                        saves[0]['4'] = [lev_com[0], medals]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+                    if mouse_y > (100 + 75 * 6) and mouse_y < (100 + 75 * 6 + 75):
+                        sound = pygame.mixer.Sound("sounds/click.wav")
+                        sound.play()
+                        with open('saves.txt', 'r') as f:
+                            contents = json.load(f)
+                        saves[0] = contents
+                        saves[0]['5'] = [lev_com[0], medals]
+                        with open('saves.txt', 'w') as f:
+                            json.dump(saves[0], f)
+
+            elif mouse_x > 520 and mouse_x < 820:
+                if mouse_y > 100 and mouse_y < 175:
+                    sound = pygame.mixer.Sound("sounds/click.wav")
+                    sound.play()
+                    with open('saves.txt', 'r') as f:
+                        contents = json.load(f)
+                    saves[0] = contents
+                    lev_com[0], medals = saves[0]['1']
+
+                if mouse_y > (100 + 75 * 1.5) and mouse_y < (100 + 75 * 1.5 + 75):
+                    sound = pygame.mixer.Sound("sounds/click.wav")
+                    sound.play()
+                    with open('saves.txt', 'r') as f:
+                        contents = json.load(f)
+                    saves[0] = contents
+                    lev_com[0], medals = saves[0]['2']
+                if mouse_y > (100 + 75 * 3) and mouse_y < (100 + 75 * 3 + 75):
+                    sound = pygame.mixer.Sound("sounds/click.wav")
+                    sound.play()
+                    with open('saves.txt', 'r') as f:
+                        contents = json.load(f)
+                    saves[0] = contents
+                    lev_com[0], medals = saves[0]['3']
+                if mouse_y > (100 + 75 * 4.5) and mouse_y < (100 + 75 * 4.5 + 75):
+                    sound = pygame.mixer.Sound("sounds/click.wav")
+                    sound.play()
+                    with open('saves.txt', 'r') as f:
+                        contents = json.load(f)
+                    saves[0] = contents
+                    lev_com[0], medals = saves[0]['4']
+                if mouse_y > (100 + 75 * 6) and mouse_y < (100 + 75 * 6 + 75):
+                    sound = pygame.mixer.Sound("sounds/click.wav")
+                    sound.play()
+                    with open('saves.txt', 'r') as f:
+                        contents = json.load(f)
+                    saves[0] = contents
+                    lev_com[0], medals = saves[0]['5']
+
+
+
+    screen.blit(background, (0, 0))
+
+    pygame.display.flip()
+    pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
+    FPS.tick(60)
+
 def display_win_screen(screen, winner, music):
     n = 0
     music.stop()
     if winner != "You Lose":
         win_sound = pygame.mixer.Sound("sounds/win_sound.mp3")
+        win_sound.set_volume(0.3)
     else:
         win_sound = pygame.mixer.Sound("sounds/death_sound.wav")
-        win_sound.set_volume(0.5)
+        win_sound.set_volume(0.2)
     win_sound.play()
     while n < 1500:
         for event in pygame.event.get():

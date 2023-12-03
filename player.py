@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.show_fire = 0
 
         self.reload_sound = pygame.mixer.Sound("sounds/reload.mp3")
-        self.reload_sound.set_volume(0.4)
+        self.reload_sound.set_volume(0.2)
 
     def draw(self):
         if self.show_fire:

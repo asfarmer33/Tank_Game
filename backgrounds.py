@@ -1,6 +1,7 @@
 import pygame
 from object import *
 from levels import *
+import json
 
 def make_background(screen, level):
     WIDTH = screen.get_width()
@@ -44,6 +45,9 @@ def start_background(screen):
     two_player_box_rect.x = WIDTH / 2 - one_player_box_rect.width / 2
     two_player_box_rect.y = HEIGHT / 2 + two_player_box_rect.height * 2
 
+    save_box_img = pygame.image.load("images/blue_button00.png")
+    save_box_img = pygame.transform.scale(save_box_img, (200, 50))
+
     my_font_bold = pygame.font.SysFont('fonts/kenvector_future.ttf', 100, True)
     my_font_reg = pygame.font.SysFont('fonts/kenvector_future.ttf', 40)
 
@@ -56,6 +60,9 @@ def start_background(screen):
     one_player_text_back = my_font_reg.render('One Player', True, (100, 100, 100))
     two_player_text = my_font_reg.render('Two Players', True, (255, 255, 255))
     two_player_text_back = my_font_reg.render('Two Players', True, (100, 100, 100))
+
+    save_text = my_font_reg.render('Save/Load', True, (255, 255, 255))
+    save_text_back = my_font_reg.render('Save/Load', True, (100, 100, 100))
 
     tank_left = pygame.image.load("images/tank_blue.png")
     tank_left = pygame.transform.scale(tank_left, (150,150))
@@ -85,6 +92,9 @@ def start_background(screen):
     background.blit(bullet_left, (210, 115))
     background.blit(tank_right, (650, 250))
     background.blit(bullet_right, (650, 115))
+    background.blit(save_box_img, (10, 10))
+    background.blit(save_text_back, (37, 20))
+    background.blit(save_text, (35, 18))
 
 
 
@@ -100,6 +110,7 @@ def one_player_background(screen, lev_com, medals):
     yb = "images/yellow_button00.png"
     rb = "images/red_button00.png"
     medal_img = pygame.image.load("images/flat_medal4.png")
+    good_medal_img = pygame.image.load("images/flatshadow_medal1.png")
 
     my_font_reg = pygame.font.SysFont('fonts/kenvector_future.ttf', 65)
     my_font_bigger = pygame.font.SysFont('fonts/kenvector_future.ttf', 80)
@@ -269,6 +280,8 @@ def one_player_background(screen, lev_com, medals):
         background.blit(lev11_img, (425, 100 + 75 * 3))
         background.blit(lev11_text_back, (440, 117 + 75 * 3))
         background.blit(lev11_text, (438, 115 + 75 * 3))
+        if 11 in medals:
+            background.blit(good_medal_img, (445, 100 + 75 * 4))
 
     background.blit(top_text_back, (127, 22))
     background.blit(top_text, (125, 20))
@@ -394,6 +407,115 @@ def two_player_background(screen):
 
     background.blit(top_text_back, (127, 22))
     background.blit(top_text, (125, 20))
+
+    return background
+
+def save_background(screen, saves):
+    WIDTH = screen.get_width()
+    HEIGHT = screen.get_height()
+    background = pygame.Surface((WIDTH, HEIGHT))
+    background.fill((83, 98, 103))
+
+    sbb = "images/blue_button00.png"
+    ubb = "images/blue_button13.png"
+
+    with open('saves.txt', 'r') as f:
+        contents = json.load(f)
+    saves[0] = contents
+
+    if saves[0]['1'] == [0, []]:
+        save1_img = pygame.image.load(ubb)
+    else:
+        save1_img = pygame.image.load(sbb)
+    save1_img = pygame.transform.scale(save1_img, (300, 75))
+
+    if saves[0]['2'] == [0, []]:
+        save2_img = pygame.image.load(ubb)
+    else:
+        save2_img = pygame.image.load(sbb)
+    save2_img = pygame.transform.scale(save2_img, (300, 75))
+
+    if saves[0]['3'] == [0, []]:
+        save3_img = pygame.image.load(ubb)
+    else:
+        save3_img = pygame.image.load(sbb)
+    save3_img = pygame.transform.scale(save3_img, (300, 75))
+
+    if saves[0]['4'] == [0, []]:
+        save4_img = pygame.image.load(ubb)
+    else:
+        save4_img = pygame.image.load(sbb)
+    save4_img = pygame.transform.scale(save4_img, (300, 75))
+
+    if saves[0]['5'] == [0, []]:
+        save5_img = pygame.image.load(ubb)
+    else:
+        save5_img = pygame.image.load(sbb)
+    save5_img = pygame.transform.scale(save5_img, (300, 75))
+
+    my_font_reg = pygame.font.SysFont('fonts/kenvector_future.ttf', 65)
+    my_font_bigger = pygame.font.SysFont('fonts/kenvector_future.ttf', 80)
+
+    # load text
+    info1_text = my_font_reg.render("Click to load", True, (255, 255, 255))
+    info1_text_back = my_font_reg.render("Click to load", True, (0, 0, 0))
+
+    info2_text = my_font_reg.render("Shift + Click to save", True, (255, 255, 255))
+    info2_text_back = my_font_reg.render("Shift + Click to save", True, (0, 0, 0))
+
+    info3_text = my_font_reg.render("LCtrl + Click to delete", True, (255, 255, 255))
+    info3_text_back = my_font_reg.render("LCtrl + Click to delete", True, (0, 0, 0))
+
+    top_text = my_font_bigger.render("Load/Save", True, (255, 255, 255))
+    top_text_back = my_font_bigger.render("Load/Save", True, (0, 0, 0))
+
+    save1_text = my_font_reg.render('Save One', True, (255, 255, 255))
+    save1_text_back = my_font_reg.render('Save One', True, (100, 100, 100))
+
+    save2_text = my_font_reg.render('Save Two', True, (255, 255, 255))
+    save2_text_back = my_font_reg.render('Save Two', True, (100, 100, 100))
+
+    save3_text = my_font_reg.render('Save Three', True, (255, 255, 255))
+    save3_text_back = my_font_reg.render('Save Three', True, (100, 100, 100))
+
+    save4_text = my_font_reg.render('Save Four', True, (255, 255, 255))
+    save4_text_back = my_font_reg.render('Save Four', True, (100, 100, 100))
+
+    save5_text = my_font_reg.render('Save Five', True, (255, 255, 255))
+    save5_text_back = my_font_reg.render('Save Five', True, (100, 100, 100))
+
+    background.blit(save1_img, (520, 100))
+    background.blit(save1_text_back, (562, 117))
+    background.blit(save1_text, (560, 115))
+
+    background.blit(save2_img, (520, 100 + 75 * 1.5))
+    background.blit(save2_text_back, (562, 115 + 75 * 1.5 + 2))
+    background.blit(save2_text, (560, 115 + 75 * 1.5))
+
+    background.blit(save3_img, (520, 100 + 75 * 3))
+    background.blit(save3_text_back, (542, 115 + 75 * 3 + 2))
+    background.blit(save3_text, (540, 115 + 75 * 3))
+
+    background.blit(save4_img, (520, 100 + 75 * 4.5))
+    background.blit(save4_text_back, (552, 115 + 75 * 4.5 + 2))
+    background.blit(save4_text, (550, 115 + 75 * 4.5))
+
+    background.blit(save5_img, (520, 100 + 75 * 6))
+    background.blit(save5_text_back, (552, 115 + 75 * 6 + 2))
+    background.blit(save5_text, (550, 115 + 75 * 6))
+
+    background.blit(top_text_back, (302, 22))
+    background.blit(top_text, (300, 20))
+
+    background.blit(info1_text_back, (12, 202))
+    background.blit(info1_text, (10, 200))
+
+    background.blit(info2_text_back, (12, 302))
+    background.blit(info2_text, (10, 300))
+
+    background.blit(info3_text_back, (12, 402))
+    background.blit(info3_text, (10, 400))
+
 
     return background
 
