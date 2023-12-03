@@ -30,6 +30,10 @@ class Player(pygame.sprite.Sprite):
         self.time_shot = 0
         self.make_bullet = 0
         self.show_fire = 0
+
+        self.reload_sound = pygame.mixer.Sound("sounds/reload.mp3")
+        self.reload_sound.set_volume(0.4)
+
     def draw(self):
         if self.show_fire:
             self.reg_image = self.reg_shoot_img
@@ -61,10 +65,10 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = self.x
         self.rect.centery = self.y
 
-        if pygame.time.get_ticks() - self.time_shot > 3000: # every 3 seconds the enemy tank can shoot
+        if pygame.time.get_ticks() - self.time_shot > 3000 and self.make_bullet == 0: # every 3 seconds the enemy tank can shoot
             self.show_fire = 1
+            self.reload_sound.play()
             self.make_bullet = 1 # creates bullet that can hit the player
-            self.time_shot = pygame.time.get_ticks()
 
 
     def turn(self, turn):
@@ -119,6 +123,7 @@ class Player(pygame.sprite.Sprite):
         if self.make_bullet == 1:
             self.make_bullet = 0
             self.show_fire = 0
+            self.time_shot = pygame.time.get_ticks()
             return 1
         else:
             return 0

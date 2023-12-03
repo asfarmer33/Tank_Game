@@ -1,8 +1,10 @@
 import pygame
 from bullets import Bullets
+from music import Music
 
-def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count):
+def run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music):
     quit_game = 0
+    music.update(level[0])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -21,14 +23,20 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                         if tanks.create_bullet():
                             bullet_count[0] += 1
                             bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 1))
+                            shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
+                            shoot_sound.play()
                 if tanks.player == 2:
                     if event.key == pygame.K_LSHIFT:
                         if tanks.create_bullet():
                             bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 2))
+                            shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
+                            shoot_sound.play()
 
     for enemy in enemy_group:
         if enemy.create_bullet():
             bullet_group.add(Bullets(screen, enemy.x, enemy.y, enemy.angle, enemy_group, object_group, player_group, bullet_group, 0, 3))
+            shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
+            shoot_sound.play()
 
     screen.blit(background, (0, 0))
 
@@ -56,9 +64,9 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                                 medals.append(level[0] - 1)
                     if level[0] - 1 > lev_com[0]:
                         lev_com[0] = level[0] - 1
-                    display_win_screen(screen, "You win")
+                    display_win_screen(screen, "You Win", music)
                 else:
-                    display_win_screen(screen, "You lose")
+                    display_win_screen(screen, "You Lose", music)
 
                 level[0] = 1
                 pygame.sprite.Group.empty(enemy_group)
@@ -69,9 +77,9 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
             if len(player_group) <= 1:
                 for tank in player_group:
                     if tank.image_player == "images/tank_blue.png":
-                        display_win_screen(screen, "Blue Wins")
+                        display_win_screen(screen, "Blue Wins", music)
                     else:
-                        display_win_screen(screen, "Green Wins")
+                        display_win_screen(screen, "Green Wins", music)
                 level[0] = 51
                 pygame.sprite.Group.empty(player_group)
                 pygame.sprite.Group.empty(bullet_group)
@@ -84,7 +92,8 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
 
 
 
-def run_start_menu(screen, background, FPS, level):
+def run_start_menu(screen, background, FPS, level, music):
+    music.update(level[0])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -109,7 +118,8 @@ def run_start_menu(screen, background, FPS, level):
     pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
     FPS.tick(60)
 
-def run_one_player_level_menu(screen, background, FPS, level, lev_com, medals):
+def run_one_player_level_menu(screen, background, FPS, level, lev_com, medals, music):
+    music.update(level[0])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -180,7 +190,8 @@ def run_one_player_level_menu(screen, background, FPS, level, lev_com, medals):
     pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
     FPS.tick(60)
 
-def run_two_player_level_menu(screen, background, FPS, level):
+def run_two_player_level_menu(screen, background, FPS, level, music):
+    music.update(level[0])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -239,9 +250,16 @@ def run_two_player_level_menu(screen, background, FPS, level):
     pygame.display.set_caption(f"Tank Game | FPS:{FPS.get_fps():3.2f}")
     FPS.tick(60)
 
-def display_win_screen(screen, winner):
+def display_win_screen(screen, winner, music):
     n = 0
-    while n < 1000:
+    music.stop()
+    if winner != "You Lose":
+        win_sound = pygame.mixer.Sound("sounds/win_sound.mp3")
+    else:
+        win_sound = pygame.mixer.Sound("sounds/death_sound.wav")
+        win_sound.set_volume(0.5)
+    win_sound.play()
+    while n < 1500:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -250,5 +268,6 @@ def display_win_screen(screen, winner):
         text = my_font_bigger.render(winner, True, (0, 0, 0))
         screen.blit(text, (300, 300))
         pygame.display.flip()
+    win_sound.fadeout(500)
 
 

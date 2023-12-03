@@ -6,6 +6,7 @@ from enemy_tanks import enemy_tank
 from object import *
 from levels import *
 from game import *
+from music import Music
 
 pygame.init()
 FPS = pygame.time.Clock()
@@ -20,9 +21,13 @@ enemy_group = pygame.sprite.Group()
 object_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 
+
+
 level = [0]
 lev_com = [10]
-medals = []
+medals = [1,2,3,4,5,6,7,8,9,10]
+
+music = Music()
 
 running = True
 while running:
@@ -31,11 +36,11 @@ while running:
     if level[0] == 0:
         background = start_background(screen)
         while level[0] == 0:
-            run_start_menu(screen, background, FPS, level)
+            run_start_menu(screen, background, FPS, level, music)
     elif level[0] == 1:
         background = one_player_background(screen, lev_com, medals)
         while level[0] == 1:
-            run_one_player_level_menu(screen, background, FPS, level, lev_com, medals)
+            run_one_player_level_menu(screen, background, FPS, level, lev_com, medals, music)
     elif level[0] > 1 and level[0] < 50:
         background = make_background(screen, level[0])
 
@@ -48,11 +53,11 @@ while running:
         if level[0] > 6:
             enemy_group.add(enemy_tank(screen, get_enemy2_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
         while level[0] > 1:
-            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count)
+            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music)
     elif level[0] == 51:
         background = two_player_background(screen)
         while level[0] == 51:
-            run_two_player_level_menu(screen, background, FPS, level)
+            run_two_player_level_menu(screen, background, FPS, level, music)
     elif level[0] > 51:
         background = make_background(screen, level[0])
 
@@ -65,5 +70,5 @@ while running:
         player_group.add(player2_tank)
 
         while level[0] > 51:
-            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count)
+            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music)
 
