@@ -201,7 +201,7 @@ class st_enemy_tank(pygame.sprite.Sprite):
         self.player_tank = player_tank
         self.object_group = object_group
         self.dif = dif
-        self.angle = 0
+        self.angle = self.player_angle()
         self.speed = dif[0]
         self.turn_speed = dif[1]
         self.shoot_speed = dif[2]
@@ -232,14 +232,16 @@ class st_enemy_tank(pygame.sprite.Sprite):
 
     def update(self):
         self.check_shoot()
-        self.turn()
+        if self.shoot:
+            self.turn()
 
         if self.level < 12:
             if pygame.time.get_ticks() - self.time_shot > self.shoot_speed:  # every 3 seconds the enemy tank can shoot
-                if self.shoot:
-                    self.show_fire = 1
-                    self.make_bullet = 1  # creates bullet that can hit the player
-                    self.time_shot = pygame.time.get_ticks()
+                if abs(self.angle - self.player_angle())%360 < 5 or abs(self.angle - self.player_angle())%360 > 355:
+                    if self.shoot:
+                        self.show_fire = 1
+                        self.make_bullet = 1  # creates bullet that can hit the player
+                        self.time_shot = pygame.time.get_ticks()
             if pygame.time.get_ticks() - self.time_shot > self.shoot_speed:  # every 3 seconds the enemy tank can shoot
                 self.show_fire = 1
         else:

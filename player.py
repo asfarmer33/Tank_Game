@@ -49,18 +49,18 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()  # list of pressed keys
         if self.player == 1:
             if keys[pygame.K_LEFT]:
-                self.angle += 1.4
-                self.turn(1.4)
+                self.angle += 1.8
+                self.turn(1.8)
             elif keys[pygame.K_RIGHT]:
-                self.angle -= 1.4
-                self.turn(-1.4)
+                self.angle -= 1.8
+                self.turn(-1.8)
         else:
             if keys[pygame.K_a]:
-                self.angle += 1.4
-                self.turn(1.4)
+                self.angle += 1.8
+                self.turn(1.8)
             elif keys[pygame.K_d]:
-                self.angle -= 1.4
-                self.turn(-1.4)
+                self.angle -= 1.8
+                self.turn(-1.8)
 
         self.rect.centerx = self.x
         self.rect.centery = self.y
