@@ -58,7 +58,6 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
     [enemy.draw() for enemy in enemy_group]
     [player.draw() for player in player_group]
 
-    print(level[0])
     if quit_game == 0:
         if level[0] == 12 and enemies_killed[0] < 10:
             if len(enemy_group) < 2:
@@ -70,32 +69,32 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
             if len(enemy_group) <= 0 or len(player_group) <= 0:
                 if len(enemy_group) <= 0:
                     if level[0] == 12:
-                        if level[0] - 1 not in medals:
-                            medals.append(level[0] - 1)
+                        if level[0] - 1 not in medals[0]:
+                            medals[0].append(level[0] - 1)
                             medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
                             medal_sound.play()
                     if level[0] < 5:
                         if bullet_count[0] <= 2:
-                            if level[0] - 1 not in medals:
-                                medals.append(level[0] - 1)
+                            if level[0] - 1 not in medals[0]:
+                                medals[0].append(level[0] - 1)
                                 medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
                                 medal_sound.play()
                     elif level[0] < 7:
                         if bullet_count[0] <= 3:
-                            if level[0] - 1 not in medals:
-                                medals.append(level[0] - 1)
+                            if level[0] - 1 not in medals[0]:
+                                medals[0].append(level[0] - 1)
                                 medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
                                 medal_sound.play()
                     elif level[0] < 9:
                         if bullet_count[0] <= 4:
-                            if level[0] - 1 not in medals:
-                                medals.append(level[0] - 1)
+                            if level[0] - 1 not in medals[0]:
+                                medals[0].append(level[0] - 1)
                                 medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
                                 medal_sound.play()
                     else:
                         if bullet_count[0] <= 5:
-                            if level[0] - 1 not in medals:
-                                medals.append(level[0] - 1)
+                            if level[0] - 1 not in medals[0]:
+                                medals[0].append(level[0] - 1)
                                 medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
                                 medal_sound.play()
                     if level[0] - 1 > lev_com[0]:
@@ -221,7 +220,7 @@ def run_one_player_level_menu(screen, background, FPS, level, lev_com, medals, m
                         sound.play()
                         level[0] = 11
             if mouse_x > 425 and mouse_x < 500 and mouse_y > (100 + 75 * 3) and mouse_y < (175 + 75 * 3):
-                if lev_com[0] > 9 and len(medals) >= 10:
+                if lev_com[0] > 9 and len(medals[0]) >= 10:
                     level[0] = 12
 
 
@@ -348,7 +347,7 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
                         with open('saves.txt', 'r') as f:
                             contents = json.load(f)
                         saves[0] = contents
-                        saves[0]['1'] = [lev_com[0], medals]
+                        saves[0]['1'] = [lev_com[0], medals[0]]
                         with open('saves.txt', 'w') as f:
                             json.dump(saves[0], f)
                     if mouse_y > (100 + 75 * 1.5) and mouse_y < (100 + 75 * 1.5 + 75):
@@ -357,7 +356,7 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
                         with open('saves.txt', 'r') as f:
                             contents = json.load(f)
                         saves[0] = contents
-                        saves[0]['2'] = [lev_com[0], medals]
+                        saves[0]['2'] = [lev_com[0], medals[0]]
                         with open('saves.txt', 'w') as f:
                             json.dump(saves[0], f)
                     if mouse_y > (100 + 75 * 3) and mouse_y < (100 + 75 * 3 + 75):
@@ -366,7 +365,7 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
                         with open('saves.txt', 'r') as f:
                             contents = json.load(f)
                         saves[0] = contents
-                        saves[0]['3'] = [lev_com[0], medals]
+                        saves[0]['3'] = [lev_com[0], medals[0]]
                         with open('saves.txt', 'w') as f:
                             json.dump(saves[0], f)
                     if mouse_y > (100 + 75 * 4.5) and mouse_y < (100 + 75 * 4.5 + 75):
@@ -375,7 +374,7 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
                         with open('saves.txt', 'r') as f:
                             contents = json.load(f)
                         saves[0] = contents
-                        saves[0]['4'] = [lev_com[0], medals]
+                        saves[0]['4'] = [lev_com[0], medals[0]]
                         with open('saves.txt', 'w') as f:
                             json.dump(saves[0], f)
                     if mouse_y > (100 + 75 * 6) and mouse_y < (100 + 75 * 6 + 75):
@@ -384,7 +383,7 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
                         with open('saves.txt', 'r') as f:
                             contents = json.load(f)
                         saves[0] = contents
-                        saves[0]['5'] = [lev_com[0], medals]
+                        saves[0]['5'] = [lev_com[0], medals[0]]
                         with open('saves.txt', 'w') as f:
                             json.dump(saves[0], f)
 
@@ -395,36 +394,40 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
                     with open('saves.txt', 'r') as f:
                         contents = json.load(f)
                     saves[0] = contents
-                    lev_com[0], medals = saves[0]['1']
-
+                    lev_com[0] = saves[0]['1'][0]
+                    medals[0] = saves[0]['1'][1]
                 if mouse_y > (100 + 75 * 1.5) and mouse_y < (100 + 75 * 1.5 + 75):
                     sound = pygame.mixer.Sound("sounds/click.wav")
                     sound.play()
                     with open('saves.txt', 'r') as f:
                         contents = json.load(f)
                     saves[0] = contents
-                    lev_com[0], medals = saves[0]['2']
+                    lev_com[0] = saves[0]['2'][0]
+                    medals[0] = saves[0]['2'][1]
                 if mouse_y > (100 + 75 * 3) and mouse_y < (100 + 75 * 3 + 75):
                     sound = pygame.mixer.Sound("sounds/click.wav")
                     sound.play()
                     with open('saves.txt', 'r') as f:
                         contents = json.load(f)
                     saves[0] = contents
-                    lev_com[0], medals = saves[0]['3']
+                    lev_com[0] = saves[0]['3'][0]
+                    medals[0] = saves[0]['3'][1]
                 if mouse_y > (100 + 75 * 4.5) and mouse_y < (100 + 75 * 4.5 + 75):
                     sound = pygame.mixer.Sound("sounds/click.wav")
                     sound.play()
                     with open('saves.txt', 'r') as f:
                         contents = json.load(f)
                     saves[0] = contents
-                    lev_com[0], medals = saves[0]['4']
+                    lev_com[0] = saves[0]['4'][0]
+                    medals[0] = saves[0]['4'][1]
                 if mouse_y > (100 + 75 * 6) and mouse_y < (100 + 75 * 6 + 75):
                     sound = pygame.mixer.Sound("sounds/click.wav")
                     sound.play()
                     with open('saves.txt', 'r') as f:
                         contents = json.load(f)
                     saves[0] = contents
-                    lev_com[0], medals = saves[0]['5']
+                    lev_com[0] = saves[0]['5'][0]
+                    medals[0] = saves[0]['5'][1]
 
 
 

@@ -219,68 +219,68 @@ def one_player_background(screen, lev_com, medals):
     background.blit(lev1_img, (70, 100))
     background.blit(lev1_text_back, (112, 117))
     background.blit(lev1_text, (110, 115))
-    if 1 in medals:
+    if 1 in medals[0]:
         background.blit(medal_img, (370, 100))
 
     background.blit(lev2_img, (70, 100 + 75 * 1.5))
     background.blit(lev2_text_back, (112, 115 + 75 * 1.5 + 2))
     background.blit(lev2_text, (110, 115 + 75 * 1.5))
-    if 2 in medals:
+    if 2 in medals[0]:
         background.blit(medal_img, (370, 100 + 75 * 1.5))
 
     background.blit(lev3_img, (70, 100 + 75 * 3))
     background.blit(lev3_text_back, (92, 115 + 75 * 3 + 2))
     background.blit(lev3_text, (90, 115 + 75 * 3))
-    if 3 in medals:
+    if 3 in medals[0]:
         background.blit(medal_img, (370, 100 + 75 * 3))
 
     background.blit(lev4_img, (70, 100 + 75 * 4.5))
     background.blit(lev4_text_back, (102, 115 + 75 * 4.5 + 2))
     background.blit(lev4_text, (100, 115 + 75 * 4.5))
-    if 4 in medals:
+    if 4 in medals[0]:
         background.blit(medal_img, (370, 100 + 75 * 4.5))
 
     background.blit(lev5_img, (70, 100 + 75 * 6))
     background.blit(lev5_text_back, (102, 115 + 75 * 6 + 2))
     background.blit(lev5_text, (100, 115 + 75 * 6))
-    if 5 in medals:
+    if 5 in medals[0]:
         background.blit(medal_img, (370, 100 + 75 * 6))
 
     background.blit(lev6_img, (526, 100))
     background.blit(lev6_text_back, (568, 117))
     background.blit(lev6_text, (566, 115))
-    if 6 in medals:
+    if 6 in medals[0]:
         background.blit(medal_img, (826, 100))
 
     background.blit(lev7_img, (526, 100 + 75 * 1.5))
     background.blit(lev7_text_back, (548, 115 + 75 * 1.5 + 2))
     background.blit(lev7_text, (546, 115 + 75 * 1.5))
-    if 7 in medals:
+    if 7 in medals[0]:
         background.blit(medal_img, (826, 100 + 75 * 1.5))
 
     background.blit(lev8_img, (526, 100 + 75 * 3))
     background.blit(lev8_text_back, (548, 115 + 75 * 3 + 2))
     background.blit(lev8_text, (546, 115 + 75 * 3))
-    if 8 in medals:
+    if 8 in medals[0]:
         background.blit(medal_img, (826, 100 + 75 * 3))
 
     background.blit(lev9_img, (526, 100 + 75 * 4.5))
     background.blit(lev9_text_back, (558, 115 + 75 * 4.5 + 2))
     background.blit(lev9_text, (556, 115 + 75 * 4.5))
-    if 9 in medals:
+    if 9 in medals[0]:
         background.blit(medal_img, (826, 100 + 75 * 4.5))
 
     background.blit(lev10_img, (526, 100 + 75 * 6))
     background.blit(lev10_text_back, (568, 115 + 75 * 6 + 2))
     background.blit(lev10_text, (566, 115 + 75 * 6))
-    if 10 in medals:
+    if 10 in medals[0]:
         background.blit(medal_img, (826, 100 + 75 * 6))
 
-    if len(medals) >= 10:
+    if len(medals[0]) >= 10:
         background.blit(lev11_img, (425, 100 + 75 * 3))
         background.blit(lev11_text_back, (440, 117 + 75 * 3))
         background.blit(lev11_text, (438, 115 + 75 * 3))
-        if 11 in medals:
+        if 11 in medals[0]:
             background.blit(good_medal_img, (445, 100 + 75 * 4))
 
     background.blit(top_text_back, (127, 22))
@@ -521,15 +521,71 @@ def save_background(screen, saves):
 
 
 def get_tile(tile_num):
-    if tile_num == 0:
+    if tile_num <= 1:
         return pygame.image.load('images/tileSand1.png')
-    if tile_num == 1:
+    if tile_num == 10:
+        return pygame.image.load('images/tileSand1.png')
+    if tile_num == 50:
         return pygame.image.load('images/tileGrass1.png')
-    if tile_num == 2:
+    if tile_num == 51:
+        return pygame.image.load('images/roads/tileGrass_roadCornerLL.png')
+    if tile_num == 52:
+        return pygame.image.load('images/roads/tileGrass_roadCornerLR.png')
+    if tile_num == 53:
+        return pygame.image.load('images/roads/tileGrass_roadCornerUL.png')
+    if tile_num == 54:
+        return pygame.image.load('images/roads/tileGrass_roadCornerUR.png')
+    if tile_num == 55:
+        return pygame.image.load('images/roads/tileGrass_roadCrossing.png')
+    if tile_num == 56:
+        return pygame.image.load('images/roads/tileGrass_roadCrossingRound.png')
+    if tile_num == 57:
+        return pygame.image.load('images/roads/tileGrass_roadEast.png')
+    if tile_num == 58:
+        return pygame.image.load('images/roads/tileGrass_roadNorth.png')
+    if tile_num == 59:
+        return pygame.image.load('images/roads/tileGrass_roadSplitE.png')
+    if tile_num == 60:
+        return pygame.image.load('images/roads/tileGrass_roadSplitN.png')
+    if tile_num == 61:
+        return pygame.image.load('images/roads/tileGrass_roadSplitS.png')
+    if tile_num == 62:
+        return pygame.image.load('images/roads/tileGrass_roadSplitW.png')
+    if tile_num == 80:
         return pygame.image.load('images/tileGrass_transitionN.png')
-    if tile_num == 3:
+    if tile_num == 81:
         return pygame.image.load('images/tileGrass_transitionE.png')
-    if tile_num == 4:
+    if tile_num == 82:
         return pygame.image.load('images/tileGrass_transitionS.png')
-    if tile_num == 5:
+    if tile_num == 83:
         return pygame.image.load('images/tileGrass_transitionW.png')
+    if tile_num == 84:
+        return pygame.image.load('images/roads/tileGrass_roadTransitionW_dirt.png')
+    if tile_num == 85:
+        return pygame.image.load('images/roads/tileGrass_roadTransitionE_dirt.png')
+    if tile_num == 86:
+        return pygame.image.load('images/roads/tileGrass_roadTransitionN_dirt.png')
+    if tile_num == 87:
+        return pygame.image.load('images/roads/tileGrass_roadTransitionS_dirt.png')
+    if tile_num == 11:
+        return pygame.image.load('images/roads/tileSand_roadCornerLR.png')
+    if tile_num == 12:
+        return pygame.image.load('images/roads/tileSand_roadCornerUL.png')
+    if tile_num == 13:
+        return pygame.image.load('images/roads/tileSand_roadCornerUR.png')
+    if tile_num == 14:
+        return pygame.image.load('images/roads/tileSand_roadCrossing.png')
+    if tile_num == 15:
+        return pygame.image.load('images/roads/tileSand_roadCrossingRound.png')
+    if tile_num == 16:
+        return pygame.image.load('images/roads/tileSand_roadEast.png')
+    if tile_num == 17:
+        return pygame.image.load('images/roads/tileSand_roadNorth.png')
+    if tile_num == 18:
+        return pygame.image.load('images/roads/tileSand_roadSplitE.png')
+    if tile_num == 19:
+        return pygame.image.load('images/roads/tileSand_roadSplitN.png')
+    if tile_num == 20:
+        return pygame.image.load('images/roads/tileSand_roadSplitS.png')
+    if tile_num == 21:
+        return pygame.image.load('images/roads/tileSand_roadSplitW.png')

@@ -25,8 +25,8 @@ player_group = pygame.sprite.Group()
 
 
 level = [0]
-lev_com = [0]
-medals = []
+lev_com = [10]
+medals = [[]]
 with open('saves.txt', 'r') as f:
     contents = json.load(f)
 saves = [0]
@@ -61,10 +61,11 @@ while running:
         player_group.add(player_tank)
 
         enemy_group.add(enemy_tank(screen, get_enemy_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
-        enemy_group.add(st_enemy_tank(screen, get_stenemy_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
-        if level[0] > 4:
+        if level[0] != 12:
+            enemy_group.add(st_enemy_tank(screen, get_stenemy_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
+        if level[0] > 4 and level[0] != 12:
             enemy_group.add(st_enemy_tank(screen, get_stenemy2_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
-        if level[0] > 8:
+        if level[0] > 8 and level[0] != 12:
             enemy_group.add(st_enemy_tank(screen, get_stenemy3_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
         if level[0] > 6:
             enemy_group.add(enemy_tank(screen, get_enemy2_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
