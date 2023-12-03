@@ -65,7 +65,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = self.x
         self.rect.centery = self.y
 
-        if pygame.time.get_ticks() - self.time_shot > 3000 and self.make_bullet == 0: # every 3 seconds the enemy tank can shoot
+        if pygame.time.get_ticks() - self.time_shot > 2000 and self.make_bullet == 0: # every 2 seconds the enemy tank can shoot
             self.show_fire = 1
             self.reload_sound.play()
             self.make_bullet = 1 # creates bullet that can hit the player
