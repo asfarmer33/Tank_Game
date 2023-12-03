@@ -22,6 +22,9 @@ enemy_group = pygame.sprite.Group()
 object_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 
+shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
+shoot_sound.set_volume(0.1)
+
 
 
 level = [0]
@@ -70,7 +73,7 @@ while running:
         if level[0] > 6: # 1-5 only have one moving enemy while 6-10 have two
             enemy_group.add(enemy_tank(screen, get_enemy2_pos(level[0]), player_tank, object_group, level[0], get_enemy_dif(level[0])))
         while level[0] > 1:
-            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music, enemies_killed)
+            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music, enemies_killed, shoot_sound)
     elif level[0] == 51: # two player menu
         background = two_player_background(screen, medals)
         while level[0] == 51:
@@ -87,5 +90,5 @@ while running:
         player_group.add(player2_tank)
 
         while level[0] > 51 and level[0] < 99:
-            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music, enemies_killed)
+            run_game(screen, player_group, enemy_group, bullet_group, object_group, background, FPS, level, lev_com, medals, bullet_count, music, enemies_killed, shoot_sound)
 

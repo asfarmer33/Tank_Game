@@ -31,7 +31,7 @@ class Bullets(pygame.sprite.Sprite):
 
         self.dis_exp_sound = pygame.mixer.Sound("sounds/dist_expl.mp3")
         self.exp_sound = pygame.mixer.Sound("sounds/expl.mp3")
-        self.exp_sound.set_volume(0.2)
+        self.exp_sound.set_volume(0.1)
         self.bounce_sound = pygame.mixer.Sound("sounds/bounce.mp3")
 
     def draw(self):
@@ -51,7 +51,6 @@ class Bullets(pygame.sprite.Sprite):
 
 
     def bouncing(self):
-        self.bounce_sound.stop()
         if self.bounce >= 2: # if it bounced more than once kill it
             self.kill()
             self.dis_exp_sound.play()
