@@ -79,30 +79,35 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                         if level[0] - 1 not in medals[0]:
                             medals[0].append(level[0] - 1)
                             medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                            medal_sound.set_volume(0.3)
                             medal_sound.play()
                     if level[0] < 5:
                         if bullet_count[0] <= 2:
                             if level[0] - 1 not in medals[0]:
                                 medals[0].append(level[0] - 1)
                                 medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                                medal_sound.set_volume(0.3)
                                 medal_sound.play()
                     elif level[0] < 7:
                         if bullet_count[0] <= 3:
                             if level[0] - 1 not in medals[0]:
                                 medals[0].append(level[0] - 1)
                                 medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                                medal_sound.set_volume(0.3)
                                 medal_sound.play()
                     elif level[0] < 9:
                         if bullet_count[0] <= 4:
                             if level[0] - 1 not in medals[0]:
                                 medals[0].append(level[0] - 1)
                                 medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                                medal_sound.set_volume(0.3)
                                 medal_sound.play()
                     else:
                         if bullet_count[0] <= 5:
                             if level[0] - 1 not in medals[0]:
                                 medals[0].append(level[0] - 1)
                                 medal_sound = pygame.mixer.Sound("sounds/medal_sound.wav")
+                                medal_sound.set_volume(0.3)
                                 medal_sound.play()
                     if level[0] - 1 > lev_com[0]:
                         lev_com[0] = level[0] - 1
