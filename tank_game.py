@@ -26,7 +26,7 @@ player_group = pygame.sprite.Group()
 
 level = [0]
 lev_com = [10]
-medals = [[1,2,3,4,5,6,7,8,9,10,11]]
+medals = [[]]
 with open('saves.txt', 'r') as f:
     contents = json.load(f)
 saves = [0]
