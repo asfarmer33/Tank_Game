@@ -38,7 +38,7 @@ class Bullets(pygame.sprite.Sprite):
         self.screen.blit(self.image, self.rect)
 
     def update(self):
-        if self.enemy_bullet:
+        if self.enemy_bullet: # if bullet comes from a player it moves faster
             self.x += 8 * math.cos(math.pi/2 - self.angle*math.pi/180) # x direction
             self.y += 8 * math.sin(math.pi / 2 - self.angle * math.pi / 180) # y direction
         else:
@@ -46,8 +46,8 @@ class Bullets(pygame.sprite.Sprite):
             self.y += 5 * math.sin(math.pi / 2 - self.angle * math.pi / 180)  # y direction
         self.rect.centerx = self.x
         self.rect.centery = self.y
-        self.bouncing()
-        self.hit_enemy()
+        self.bouncing() # check bounce
+        self.hit_enemy() # check hit enemy
 
 
     def bouncing(self):
@@ -96,32 +96,32 @@ class Bullets(pygame.sprite.Sprite):
         return (self.get_distance(coord1, coord2) < self.collision_radius)
 
     def hit_enemy(self):
-        hit_enemy_list = pygame.sprite.spritecollide(self, self.enemy_group, False, collided=self.get_sprite_distance)
+        hit_enemy_list = pygame.sprite.spritecollide(self, self.enemy_group, False, collided=self.get_sprite_distance) # checks if bullet hit enemy
         if hit_enemy_list:
-            if self.enemy_bullet == 1:
+            if self.enemy_bullet == 1: # if it was shot by a player kill the enemy
                 for enemy in hit_enemy_list:
                     enemy.kill()
                 self.kill()
                 self.exp_sound.play()
 
-        hit_enemy_list = pygame.sprite.spritecollide(self, self.player_group, False, collided=self.get_sprite_distance)
+        hit_enemy_list = pygame.sprite.spritecollide(self, self.player_group, False, collided=self.get_sprite_distance) # checks if bullet hit player
         if pygame.time.get_ticks() - self.time_alive > 200:
             if hit_enemy_list:
-                if self.enemy_bullet == 1:
+                if self.enemy_bullet == 1: # if it was shot by a player kill the player
                     for player in hit_enemy_list:
                         player.kill()
                     self.kill()
                     self.exp_sound.play()
 
-        hit_enemy_list = pygame.sprite.spritecollide(self, self.player_group, False, collided=self.get_sprite_distance)
+        hit_enemy_list = pygame.sprite.spritecollide(self, self.player_group, False, collided=self.get_sprite_distance) # checks if bullet hit player
         if hit_enemy_list:
             if self.enemy_bullet == 0:
-                for player in hit_enemy_list:
+                for player in hit_enemy_list: # if it was shot by an enemy kill the player
                     player.kill()
                 self.kill()
                 self.exp_sound.play()
 
-        hit_enemy_list = pygame.sprite.spritecollide(self, self.bullet_group, False, pygame.sprite.collide_rect_ratio(0.7))
+        hit_enemy_list = pygame.sprite.spritecollide(self, self.bullet_group, False, pygame.sprite.collide_rect_ratio(0.7)) # checks if bullet hit object
         if hit_enemy_list:
             for bullet in hit_enemy_list:
                 if bullet is not self:

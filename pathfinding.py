@@ -111,7 +111,7 @@ def path(player, enemy, level, last_player_pos, last_path):
         all_paths.append(final_path)
     try: # sometimes it has trouble finding, so just do not run it and return a blank path
         shortest_path = all_paths[0]
-        for options in all_paths:
+        for options in all_paths: # find the shortest path
             if len(options) <= len(shortest_path):
                 shortest_path = options[:]
     except Exception as e:
@@ -119,7 +119,7 @@ def path(player, enemy, level, last_player_pos, last_path):
         print(e)
         shortest_path = [player_coord]
 
-    print(f"This is the shortest path: {shortest_path}")
+    # print(f"This is the shortest path: {shortest_path}")
     return shortest_path
 
 
@@ -138,10 +138,10 @@ def check_distance_to_point(path, en_x, en_y):
     except:
         print("error check distance to point")
 
-player = pygame.Rect(64, 64, 20,20) # for testing
-enemy = pygame.Rect(256, 448, 20, 20)
+#player = pygame.Rect(64, 64, 20,20) # for testing
+#enemy = pygame.Rect(256, 448, 20, 20)
 
-print(path(player.center, enemy.center, 99, (0,0), (0,0)))
+#print(path(player.center, enemy.center, 99, (0,0), (0,0)))
 
 
 

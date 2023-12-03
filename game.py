@@ -14,6 +14,7 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
             pygame.quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
+                # if you press escape take you to the menu and clear all objects
                 level[0] = 0
                 pygame.sprite.Group.empty(enemy_group)
                 pygame.sprite.Group.empty(player_group)
@@ -25,6 +26,7 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                 if tanks.player == 1:
                     if event.key == pygame.K_SPACE:
                         if tanks.create_bullet():
+                            # create a bullet for player 1
                             bullet_count[0] += 1
                             bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 1))
                             shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
@@ -33,6 +35,7 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                 if tanks.player == 2:
                     if event.key == pygame.K_LSHIFT:
                         if tanks.create_bullet():
+                            # create a bullet for player 2
                             bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 2))
                             shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
                             shoot_sound.set_volume(0.3)
@@ -40,26 +43,29 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
 
     for enemy in enemy_group:
         if enemy.create_bullet():
+            # create a bullet for enemy
             bullet_group.add(Bullets(screen, enemy.x, enemy.y, enemy.angle, enemy_group, object_group, player_group, bullet_group, 0, 3))
             if level[0] != 12:
+                # level 12 had too much sound going on
                 shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
                 shoot_sound.set_volume(0.3)
                 shoot_sound.play()
 
     screen.blit(background, (0, 0))
 
-
+    # update everything
     [player.update() for player in player_group]
     [bullet.update() for bullet in bullet_group]
     [enemy.update() for enemy in enemy_group]
 
+    # draw everything
     [bullet.draw() for bullet in bullet_group]
     [objects.draw() for objects in object_group]
     [enemy.draw() for enemy in enemy_group]
     [player.draw() for player in player_group]
 
-    if quit_game == 0:
-        if level[0] == 12 and enemies_killed[0] < 10:
+    if quit_game == 0: # if you did not quit
+        if level[0] == 12 and enemies_killed[0] < 10: # for level 12 keep spawning enemies
             if len(enemy_group) < 2:
                 for tank in player_group:
                     if tank.player == 1:
@@ -68,6 +74,7 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
         if level[0] < 50:
             if len(enemy_group) <= 0 or len(player_group) <= 0:
                 if len(enemy_group) <= 0:
+                    # all these caclulate whether to give a medal or not depending on how many shots you had to get medal shots = number of enemies
                     if level[0] == 12:
                         if level[0] - 1 not in medals[0]:
                             medals[0].append(level[0] - 1)
@@ -100,15 +107,16 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                     if level[0] - 1 > lev_com[0]:
                         lev_com[0] = level[0] - 1
                     display_win_screen(screen, "You Win", music)
-                else:
+                else: # if the enemies remain you lose
                     display_win_screen(screen, "You Lose", music)
 
-                level[0] = 1
+                level[0] = 1 # go back to level select
+                # empty all the groups, so you can respawn stuff for later levels
                 pygame.sprite.Group.empty(enemy_group)
                 pygame.sprite.Group.empty(player_group)
                 pygame.sprite.Group.empty(bullet_group)
                 pygame.sprite.Group.empty(object_group)
-        else:
+        else: # for two players check to see who wins when someone dies
             if len(player_group) <= 1:
                 for tank in player_group:
                     if tank.image_player == "images/tank_blue.png":
@@ -129,6 +137,7 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
 
 def run_start_menu(screen, background, FPS, level, music):
     music.update(level[0])
+    # check to see if you click on a box
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -136,7 +145,6 @@ def run_start_menu(screen, background, FPS, level, music):
             mouse_x, mouse_y = pygame.mouse.get_pos()
             if mouse_x > (screen.get_width() / 2 - 190/2) and mouse_x < (screen.get_width() / 2 + 190/2):
                 if mouse_y < (screen.get_height() / 2 + 49) and mouse_y > (screen.get_height() / 2):
-                    print("test")
                     sound = pygame.mixer.Sound("sounds/click.wav")
                     sound.play()
                     level[0] = 1
@@ -160,6 +168,7 @@ def run_start_menu(screen, background, FPS, level, music):
 
 def run_one_player_level_menu(screen, background, FPS, level, lev_com, medals, music):
     music.update(level[0])
+    # check to see if you click on a box
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -232,6 +241,7 @@ def run_one_player_level_menu(screen, background, FPS, level, lev_com, medals, m
 
 def run_two_player_level_menu(screen, background, FPS, level, medals, music):
     music.update(level[0])
+    # check to see if you click on a box
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -307,6 +317,7 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
         if event.type == pygame.MOUSEBUTTONDOWN:
             keys = pygame.key.get_pressed()
             mouse_x, mouse_y = pygame.mouse.get_pos()
+            # if you click on a box while pressing ctr del the save
             if keys[pygame.K_LCTRL]:
                 print("test")
                 if mouse_x > 520 and mouse_x < 820:
@@ -342,6 +353,7 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
                         with open('saves.txt', 'w') as f:
                             json.dump(saves[0], f)
 
+            # if you click on a box while pressing shift save
             elif keys[pygame.K_LSHIFT]:
                 print("test2")
                 if mouse_x > 520 and mouse_x < 820:
@@ -391,6 +403,7 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
                         with open('saves.txt', 'w') as f:
                             json.dump(saves[0], f)
 
+            # if you click on a box load
             elif mouse_x > 520 and mouse_x < 820:
                 if mouse_y > 100 and mouse_y < 175:
                     sound = pygame.mixer.Sound("sounds/click.wav")
@@ -444,6 +457,7 @@ def run_save_screen(screen, FPS, level, music, saves, lev_com, medals):
 def display_win_screen(screen, winner, music):
     n = 0
     music.stop()
+    # stop for a little and display win message and play music
     if winner != "You Lose":
         win_sound = pygame.mixer.Sound("sounds/win_sound.mp3")
         win_sound.set_volume(0.3)

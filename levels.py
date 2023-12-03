@@ -1,7 +1,7 @@
 import pygame
 
 
-def get_object_level(level):
+def get_object_level(level): # objects for the levels
     objects = {"99":
             [
                 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -181,7 +181,7 @@ def get_object_level(level):
     return objects[str(level)]
 
 
-def get_background_level(level):
+def get_background_level(level): # backgrounds for the levels
     backgrounds = {"99":
             [
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -361,7 +361,7 @@ def get_background_level(level):
 
     return backgrounds[str(level)]
 
-def get_enemy_pos(level):
+def get_enemy_pos(level): # enemy 1 pos
     tank_pos = {"99": [30, 600], "1": [700, 500], "2": [700, 500], "3": [400, 500], "4": [700, 500], "5": [700, 450], "6": [700, 450], "7": [700, 500], "8": [800, 300], "9": [800, 400], "10": [800, 400], "11": [700, 550]}
 
     if level > 50 and level < 99:
@@ -371,7 +371,7 @@ def get_enemy_pos(level):
 
     return tank_pos[str(level)]
 
-def get_enemy2_pos(level):
+def get_enemy2_pos(level): # enemy 2 pos
     tank_pos = {"99": [30, 600], "1": [700, 500], "2": [700, 500], "3": [700, 500], "4": [700, 500], "5": [700, 450], "6": [400, 600], "7": [800, 200], "8": [500, 600], "9": [500, 600], "10": [400, 600], "11": [500, 550]}
 
     if level > 50 and level < 99:
@@ -381,7 +381,7 @@ def get_enemy2_pos(level):
 
     return tank_pos[str(level)]
 
-def get_stenemy_pos(level):
+def get_stenemy_pos(level): # enemy 1 stationary pos
     tank_pos = {"99": [30, 600], "1": [650, 450], "2": [200, 500], "3": [50, 600], "4": [420, 300], "5": [700, 500], "6": [600, 550], "7": [100, 400], "8": [100, 600], "9": [400, 400], "10": [800, 200], "11": [700, 550]}
 
     if level > 50 and level < 99:
@@ -391,7 +391,7 @@ def get_stenemy_pos(level):
 
     return tank_pos[str(level)]
 
-def get_stenemy2_pos(level):
+def get_stenemy2_pos(level): # enemy 2 stationary pos
     tank_pos = {"99": [30, 600], "1": [700, 500], "2": [700, 500], "3": [700, 500], "4": [700, 100], "5": [200, 500], "6": [300, 550], "7": [620, 300], "8": [50, 400], "9": [100, 600], "10": [300, 600], "11": [500, 550]}
 
     if level > 50 and level < 99:
@@ -401,7 +401,7 @@ def get_stenemy2_pos(level):
 
     return tank_pos[str(level)]
 
-def get_stenemy3_pos(level):
+def get_stenemy3_pos(level): # enemy 3 stationary pos
     tank_pos = {"99": [30, 600], "1": [700, 500], "2": [700, 500], "3": [400, 500], "4": [700, 500], "5": [700, 450], "6": [700, 450], "7": [700, 500], "8": [800, 600], "9": [800, 220], "10": [420, 50], "11": [700, 550]}
 
     if level > 50 and level < 99:
@@ -411,7 +411,7 @@ def get_stenemy3_pos(level):
 
     return tank_pos[str(level)]
 
-def get_enemy_dif(level):
+def get_enemy_dif(level): # enemy difficulty for each level
     dif = {"99": [1, 0.8, 3000], "1": [1, 0.8, 3000], "2": [1.2, 1.8, 2500], "3": [1.4, 2.2, 2200], "4": [1.6, 3.3, 2000], "5": [1.8, 3.6, 1500], "6": [1.4, 1.4, 1500], "7": [1.6, 1.8, 2000], "8": [1.7, 2.2, 1800], "9": [1.8, 2.4, 1800], "10": [1.9, 2.8, 1800], "11": [2, 3, 1500]}
 
     if level > 50 and level < 99:
@@ -420,7 +420,7 @@ def get_enemy_dif(level):
         level -= 1
 
     return dif[str(level)]
-def get_player_pos(level):
+def get_player_pos(level): # get player pos
     player_pos = {"99": [30, 30], "1": [100, 100], "2": [100, 100], "3": [750, 100], "4": [100, 100], "5": [100, 200], "6": [100, 150], "7": [100, 100], "8": [100, 100], "9": [100, 100], "10": [100, 100], "11": [100, 100]}
 
     if level > 50 and level < 99:

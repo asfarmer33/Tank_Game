@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.reload_sound.set_volume(0.2)
 
     def draw(self):
-        if self.show_fire:
+        if self.show_fire: # draw red dot if it can shoot
             self.reg_image = self.reg_shoot_img
         else:
             self.reg_image = self.reg_not_shoot_img
@@ -44,10 +44,10 @@ class Player(pygame.sprite.Sprite):
         self.screen.blit(self.image, self.rect)
 
     def update(self):
-        self.move()
+        self.move() # move
 
         keys = pygame.key.get_pressed()  # list of pressed keys
-        if self.player == 1:
+        if self.player == 1: # turn depending on keys
             if keys[pygame.K_LEFT]:
                 self.angle += 1.8
                 self.turn(1.8)
@@ -71,7 +71,7 @@ class Player(pygame.sprite.Sprite):
             self.make_bullet = 1 # creates bullet that can hit the player
 
 
-    def turn(self, turn):
+    def turn(self, turn): # turn
         original_rect = self.rect
         self.angle %= 360
         collided = pygame.sprite.spritecollide(self, self.object_group, False)
@@ -79,7 +79,7 @@ class Player(pygame.sprite.Sprite):
             self.rect = original_rect
             self.angle -= turn
 
-    def move(self):
+    def move(self): # move in the x and y depending on keys
         keys = pygame.key.get_pressed()  # list of pressed keys
         if self.player == 1:
             if keys[pygame.K_UP]:
@@ -107,19 +107,19 @@ class Player(pygame.sprite.Sprite):
 
 
 
-    def movex(self):
-        if (self.x - self.rect.width/2) > 0 and (self.x + self.rect.width/2) < self.screen.get_width():
-            self.x += self.speed * math.cos(math.pi/2 - self.angle*math.pi/180)
+    def movex(self): # move in the x
+        if (self.x - self.rect.width/2) > 0 and (self.x + self.rect.width/2) < self.screen.get_width(): # if it hits the wall dont let it move
+            self.x += self.speed * math.cos(math.pi/2 - self.angle*math.pi/180) # calculate the amount of x dir
         else:
             self.x, self.y = self.path[0]
 
     def movey(self):
-        if (self.y - self.rect.height/2) > 0 and (self.y + self.rect.height/2) < self.screen.get_height():
-            self.y += self.speed * math.sin(math.pi/2 - self.angle*math.pi/180)
+        if (self.y - self.rect.height/2) > 0 and (self.y + self.rect.height/2) < self.screen.get_height(): # if it hits the wall dont let it move
+            self.y += self.speed * math.sin(math.pi/2 - self.angle*math.pi/180) # calculate the amount of y dir
         else:
             self.x, self.y = self.path[0]
 
-    def create_bullet(self):
+    def create_bullet(self): # makes bullet (called outside of class)
         if self.make_bullet == 1:
             self.make_bullet = 0
             self.show_fire = 0
@@ -128,7 +128,7 @@ class Player(pygame.sprite.Sprite):
         else:
             return 0
 
-    def check_collide(self):
+    def check_collide(self): # check to see if the player collided with any groups
         collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.8))
         if collided:
             return 1

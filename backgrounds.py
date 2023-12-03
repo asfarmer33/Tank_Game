@@ -216,6 +216,7 @@ def one_player_background(screen, lev_com, medals):
     lev11_img = pygame.image.load(yb)
     lev11_img = pygame.transform.scale(lev11_img, (75, 75))
 
+    # blit images
     background.blit(lev1_img, (70, 100))
     background.blit(lev1_text_back, (112, 117))
     background.blit(lev1_text, (110, 115))
@@ -371,6 +372,7 @@ def two_player_background(screen, medals):
     lev11_img = pygame.image.load(yb)
     lev11_img = pygame.transform.scale(lev11_img, (75, 75))
 
+    # blit images
     background.blit(lev1_img, (70, 100))
     background.blit(lev1_text_back, (112, 117))
     background.blit(lev1_text, (110, 115))
