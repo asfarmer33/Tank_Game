@@ -51,6 +51,7 @@ class Bullets(pygame.sprite.Sprite):
 
 
     def bouncing(self):
+        self.bounce_sound.stop()
         if self.bounce >= 2: # if it bounced more than once kill it
             self.kill()
             self.dis_exp_sound.play()

@@ -24,8 +24,8 @@ class check_shoot(pygame.sprite.Sprite): # class is used to check if the enemy w
         self.screen.blit(self.image, self.rect)
 
     def update(self): # move the "bullet"
-        self.x += 40 * math.cos(math.pi / 2 - self.angle * math.pi / 180) # it is fast
-        self.y += 40 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
+        self.x += 50 * math.cos(math.pi / 2 - self.angle * math.pi / 180) # it is fast
+        self.y += 50 * math.sin(math.pi / 2 - self.angle * math.pi / 180)
 
         self.rect.centerx = self.x
         self.rect.centery = self.y

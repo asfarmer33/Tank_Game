@@ -63,6 +63,7 @@ class enemy_tank(pygame.sprite.Sprite):
             print("error")
         '''
 
+
     def update(self):
         self.turn_path_bearing()
         self.check_shoot()

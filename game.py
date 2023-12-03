@@ -30,7 +30,7 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                             bullet_count[0] += 1
                             bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 1))
                             shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
-                            shoot_sound.set_volume(0.3)
+                            shoot_sound.set_volume(0.1)
                             shoot_sound.play()
                 if tanks.player == 2:
                     if event.key == pygame.K_LSHIFT:
@@ -38,7 +38,7 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                             # create a bullet for player 2
                             bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 2))
                             shoot_sound = pygame.mixer.Sound("sounds/shoot.mp3")
-                            shoot_sound.set_volume(0.3)
+                            shoot_sound.set_volume(0.1)
                             shoot_sound.play()
 
     for enemy in enemy_group:
@@ -465,7 +465,7 @@ def display_win_screen(screen, winner, music):
     # stop for a little and display win message and play music
     if winner != "You Lose":
         win_sound = pygame.mixer.Sound("sounds/win_sound.mp3")
-        win_sound.set_volume(0.3)
+        win_sound.set_volume(0.4)
     else:
         win_sound = pygame.mixer.Sound("sounds/death_sound.wav")
         win_sound.set_volume(0.2)
