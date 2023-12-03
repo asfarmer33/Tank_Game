@@ -51,7 +51,7 @@ class check_shoot(pygame.sprite.Sprite): # class is used to check if the enemy w
         return self.get_distance(coord1, coord2)
 
     def check_hit(self):
-        collided = pygame.sprite.spritecollide(self, self.object_group, False, pygame.sprite.collide_rect_ratio(0.93))
+        collided = pygame.sprite.spritecollide(self, self.object_group, False)
         if collided: # if it collides with an object do not check to see if it hits the player
             self.check_for_hit = 0
             return 0
