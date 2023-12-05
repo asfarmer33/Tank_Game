@@ -28,19 +28,19 @@ def run_game(screen, player_group, enemy_group, bullet_group, object_group, back
                         if tanks.create_bullet():
                             # create a bullet for player 1
                             bullet_count[0] += 1
-                            bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 1))
+                            bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 1, level))
                             shoot_sound.play()
                 if tanks.player == 2:
                     if event.key == pygame.K_LSHIFT:
                         if tanks.create_bullet():
                             # create a bullet for player 2
-                            bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 2))
+                            bullet_group.add(Bullets(screen, tanks.x, tanks.y, tanks.angle, enemy_group, object_group, player_group, bullet_group, 1, 2, level))
                             shoot_sound.play()
 
     for enemy in enemy_group:
         if enemy.create_bullet():
             # create a bullet for enemy
-            bullet_group.add(Bullets(screen, enemy.x, enemy.y, enemy.angle, enemy_group, object_group, player_group, bullet_group, 0, 3))
+            bullet_group.add(Bullets(screen, enemy.x, enemy.y, enemy.angle, enemy_group, object_group, player_group, bullet_group, 0, 3, level))
             if level[0] != 12:
                 # level 12 had too much sound going on
                 shoot_sound.play()

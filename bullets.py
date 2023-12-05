@@ -3,7 +3,7 @@ import math
 
 class Bullets(pygame.sprite.Sprite):
 
-    def __init__(self, screen, x, y, angle, enemy_group, object_group, player_group, bullet_group, enemy_bullet, tank):
+    def __init__(self, screen, x, y, angle, enemy_group, object_group, player_group, bullet_group, enemy_bullet, tank, level):
         super().__init__()
         self.screen = screen
         self.x = x
@@ -28,6 +28,7 @@ class Bullets(pygame.sprite.Sprite):
         self.collision_radius = self.reg_image.get_height() * 2
         self.enemy_bullet = enemy_bullet
         self.time_alive = pygame.time.get_ticks()
+        self.level = level
 
         self.dis_exp_sound = pygame.mixer.Sound("sounds/dist_expl.mp3")
         self.exp_sound = pygame.mixer.Sound("sounds/expl.mp3")
@@ -53,20 +54,23 @@ class Bullets(pygame.sprite.Sprite):
     def bouncing(self):
         if self.bounce >= 2: # if it bounced more than once kill it
             self.kill()
-            self.dis_exp_sound.play()
+            if self.level[0] != 12:
+                self.dis_exp_sound.play()
         if self.bounce < 2: # allow it to bounce only once
             if self.x + self.image.get_width()/2 > self.screen.get_width() or self.x - self.image.get_width()/2 < 0: # check boundaries of screen
                 self.angle *= -1 # swaps angle
                 self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
                 self.bounce += 1
                 if self.bounce == 1:
-                    self.bounce_sound.play()
+                    if self.level[0] != 12:
+                        self.bounce_sound.play()
             if self.y + self.image.get_height()/2 > self.screen.get_height() or self.y - self.image.get_height()/2 < 0:
                 self.angle = self.angle * -1 + 180 # swaps angle and then flips it
                 self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
                 self.bounce += 1
                 if self.bounce == 1:
-                    self.bounce_sound.play()
+                    if self.level[0] != 12:
+                        self.bounce_sound.play()
 
 
             for object in self.object_group: # checking all objects on the screen
@@ -77,13 +81,15 @@ class Bullets(pygame.sprite.Sprite):
                         self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
                         self.bounce += 1
                         if self.bounce == 1:
-                            self.bounce_sound.play()
+                            if self.level[0] != 12:
+                                self.bounce_sound.play()
                     elif self.rect.centery > object.rect.centery + object.get_height()/2 * hit_factor or self.rect.centery < object.rect.centery - object.get_height()/2 * hit_factor: # else it hit the top of the box
                         self.angle = self.angle * -1 + 180  # swaps angle and then flips it
                         self.image = pygame.transform.rotate(self.reg_image, self.angle + 180)
                         self.bounce += 1
                         if self.bounce == 1:
-                            self.bounce_sound.play()
+                            if self.level[0] != 12:
+                                self.bounce_sound.play()
 
     def get_distance(self, coord1, coord2):
         x1, y1 = coord1
